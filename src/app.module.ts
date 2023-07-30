@@ -5,6 +5,11 @@ import { TeachersModule } from './teachers/teachers.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule , ConfigService } from '@nestjs/config';
 import { User } from './users/user.entity';
+import { RoleService } from './role/role.service';
+import { OnModuleInit } from '@nestjs/common/interfaces';
+import { RoleModule } from './role/role.module';
+import { Role } from './role/role.entity';
+import { log } from 'console';
 
 
 @Module({
@@ -19,15 +24,28 @@ import { User } from './users/user.entity';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User],
+        entities: [User , Role],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     UsersModule, 
     TeachersModule,
-    StudentsModule
+    StudentsModule,
+    RoleModule,
    ],
 
+
+
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly roleService : RoleService){}
+
+  async onModuleInit(){
+    const roles = await this.roleService.getAllRoles();
+    log(roles)
+    if(!roles || roles.length == 0){
+      this.roleService.createRoles();
+    }
+  }
+}

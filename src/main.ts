@@ -6,5 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe())
   await app.listen(3000);
+
+  // insert the roles in the database at the application starting
 }
 bootstrap();

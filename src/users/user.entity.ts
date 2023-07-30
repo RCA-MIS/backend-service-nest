@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn , Column , IsNull } from "typeorm";
-import { EGender } from "./Enum/EGender.enum";
-import { EUserStatus } from "./Enum/EUserStatus.enum";
+import { Entity, PrimaryGeneratedColumn , Column , IsNull,  } from "typeorm";
+import { EGender } from "../Enum/EGender.enum";
+import { EUserStatus } from "../Enum/EUserStatus.enum";
 
 @Entity()
 export class User{
@@ -14,25 +14,36 @@ export class User{
     username : string;
 
     @Column()
+    phonenumber : string = "";
+
+    @Column({
+        nullable : true,
+        default : null
+    })
     last_login : Date;
 
     @Column()
     gender : EGender;
 
-    @Column()
+    @Column({
+        nullable : true,
+        default : null
+    })
     profile_pic : string;
 
     @Column()
     password : string;
 
-    @Column()
+    @Column({
+        default : new Date(Date.now())
+    })
     created_at : Date;
 
-    @Column()
+    @Column({
+        nullable : true,
+        default : null
+    })
     updated_at : Date;
-
-    @Column()
-    deleted_at : Date;
 
     @Column()
     activatationCode : string;
@@ -46,9 +57,15 @@ export class User{
     @Column()
     national_id : string;
 
-    @Column()
+    @Column({
+        nullable : true,
+        default : null
+    })
     studentId : number;
 
-    @Column()
+    @Column({
+        nullable : true,
+        default : null
+    })
     teacherId : number;
 }
