@@ -1,5 +1,6 @@
-import { Controller } from '@nestjs/common';
+import { Controller , Param ,Delete , Get } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { NotFoundException } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -9,13 +10,18 @@ export class UsersController {
 
     }
 
-
+    @Get('/all')
     getUsers(){
-
+     return this.usersService.getUsers();
     }
 
-    getUserById(){
-
+    @Get("/:id")
+    async  getUserById( @Param('id') id : number ){
+     const user = await this.usersService.getUserById(id);
+     if(!user){
+            throw new NotFoundException('User not found');
+     }
+     return user;
     }
 
     createUser(){
@@ -26,7 +32,8 @@ export class UsersController {
 
     }
 
-    deleteUser(){
-
+    @Delete("/;id")
+    deleteUser(@Param('id') id : number){
+        return this.usersService.deleteUser(id);
     }
 }
