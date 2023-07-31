@@ -1,4 +1,4 @@
-import { IsString , IsNotEmpty } from "class-validator";
+import { IsString , IsNotEmpty, IsEnum } from "class-validator";
 import { EGender } from "../../Enum/EGender.enum";
 
 export class CreateUserDto{
@@ -12,7 +12,11 @@ export class CreateUserDto{
 
     @IsString()
     @IsNotEmpty()
-    gender : EGender;
+    @IsEnum(EGender)
+    myGender : EGender;
+
+    @IsString()
+    @IsNotEmpty()
     registercode : string;
 
     @IsString()

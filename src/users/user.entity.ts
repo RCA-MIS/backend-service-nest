@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn , Column , IsNull,  } from "typeorm";
+import { Entity, PrimaryGeneratedColumn , Column , IsNull, OneToMany, OneToOne, ManyToOne, JoinColumn,  } from "typeorm";
 import { EGender } from "../Enum/EGender.enum";
 import { EUserStatus } from "../Enum/EUserStatus.enum";
+import { Role } from "src/role/role.entity";
 
 @Entity()
 export class User{
@@ -46,13 +47,13 @@ export class User{
     updated_at : Date;
 
     @Column()
-    activatationCode : string;
+    activationCode : number;
 
     @Column()
     status : EUserStatus;
 
-    @Column()
-    role : string;
+    @ManyToOne(()=> Role )
+    role : Role;
 
     @Column()
     national_id : string;

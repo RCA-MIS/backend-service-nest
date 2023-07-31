@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm/dist';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common/exceptions';
 import { CreateUserDto } from './Dto/create-user.dto';
 import { RoleService } from 'src/role/role.service';
+import { EUserStatus } from 'src/Enum/EUserStatus.enum';
+import { EGender } from 'src/Enum/EGender.enum';
 
 @Injectable()
 export class UsersService {
@@ -31,20 +33,38 @@ export class UsersService {
         return response;
     }
 
+     generateRandomFourDigitNumber(): number {
+        const min = 1000;
+        const max = 9999;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
     async createUser(body : CreateUserDto){
-       const {email , username , gender , registercode , national_id , phonenumber , password} = body;
+       const {email , username , myGender , registercode , national_id , phonenumber , password} = body;
        if(registercode != "rcaKeyAdmin"){
         return new UnauthorizedException("Incorrect Registration Key")
        }
-       
-      this.userRepo.create({
+       const status : EUserStatus = EUserStatus.WAIT_EMAIL_VERIFICATION;
+       const role = await this.roleService.getRoleById(10);
+       const gender = EGender[myGender.toString()];
+       const activationCode = this.generateRandomFourDigitNumber();
+       try{
+      const userEntity = this.userRepo.create({
         email,
         username,
         gender,
         national_id,
         phonenumber,
-        password
+        password,
+        status,
+        role,
+        activationCode
       })
+        this.userRepo.save(userEntity);
+        return userEntity;
+      }catch(error){
+          console.log(error)
+      }
     }
 
     async updateUser(){
