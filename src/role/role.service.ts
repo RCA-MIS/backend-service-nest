@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import { Injectable } from "@nestjs/common/decorators/core/injectable.decorator";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";

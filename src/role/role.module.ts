@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import { Module } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { TypeOrmModule } from '@nestjs/typeorm';

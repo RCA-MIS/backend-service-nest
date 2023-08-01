@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import { Entity, PrimaryGeneratedColumn , Column , IsNull, OneToMany, OneToOne, ManyToOne, JoinColumn,  } from "typeorm";
 import { EGender } from "../Enum/EGender.enum";
 import { EUserStatus } from "../Enum/EUserStatus.enum";

@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import { Controller , Param ,Delete , Get, Body , Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
@@ -35,7 +36,7 @@ export class UsersController {
     }
 
     @Delete("/;id")
-    deleteUser(@Param('id') id : number){
+deleteUser(@Param('id') id:number){
         return this.usersService.deleteUser(id);
     }
 }

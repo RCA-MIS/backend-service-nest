@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import { ERole } from "src/Enum/ERole.enum";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 

@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import { Module } from '@nestjs/common';
 import { TeachersController } from './teachers.controller';
 

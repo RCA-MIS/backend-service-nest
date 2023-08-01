@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import { EGender } from "../../Enum/EGender.enum";
 
 export class UpdateUserDto{

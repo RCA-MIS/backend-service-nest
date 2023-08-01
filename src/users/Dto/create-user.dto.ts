@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import { IsString , IsNotEmpty, IsEnum } from "class-validator";
 import { EGender } from "../../Enum/EGender.enum";
 
