@@ -68,8 +68,13 @@ export class UsersService {
       }
     }
 
-    async updateUser(){
-
+    async updateUser(id : number , attrs : Partial<User>){
+      const user = await this.getUserById(id);
+      if(!user){
+          throw new NotFoundException('User not found');
+      }
+      Object.assign(user , attrs);
+      return this.userRepo.save(user);
     }
 
     async deleteUser(id : number){
