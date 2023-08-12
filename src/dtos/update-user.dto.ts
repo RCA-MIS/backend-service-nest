@@ -1,5 +1,5 @@
 /* eslint-disable */ 
-import { EGender } from "../../Enum/EGender.enum";
+import { EGender } from "../Enum/EGender.enum";
 import { IsString , IsOptional, IsEnum  } from "class-validator";
 
 export class UpdateUserDto{
