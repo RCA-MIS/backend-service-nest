@@ -5,11 +5,11 @@ import { StudentsModule } from './students/students.module';
 import { TeachersModule } from './teachers/teachers.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule , ConfigService } from '@nestjs/config';
-import { User } from './users/user.entity';
+import { User } from './entities/user.entity';
 import { RoleService } from './role/role.service';
 import { OnModuleInit } from '@nestjs/common/interfaces';
 import { RoleModule } from './role/role.module';
-import { Role } from './role/role.entity';
+import { Role } from './entities/role.entity';
 import { log } from 'console';
 
 
