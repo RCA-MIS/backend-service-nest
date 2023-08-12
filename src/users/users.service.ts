@@ -1,10 +1,10 @@
 /* eslint-disable */ 
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm/dist';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common/exceptions';
-import { CreateUserDto } from './Dto/create-user.dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { RoleService } from 'src/role/role.service';
 import { EUserStatus } from 'src/Enum/EUserStatus.enum';
 import { EGender } from 'src/Enum/EGender.enum';

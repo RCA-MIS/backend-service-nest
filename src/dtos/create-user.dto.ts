@@ -1,6 +1,6 @@
 /* eslint-disable */ 
 import { IsString , IsNotEmpty, IsEnum } from "class-validator";
-import { EGender } from "../../Enum/EGender.enum";
+import { EGender } from "../Enum/EGender.enum";
 
 export class CreateUserDto{
     @IsString()

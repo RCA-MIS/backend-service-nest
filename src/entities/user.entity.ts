@@ -2,7 +2,7 @@
 import { Entity, PrimaryGeneratedColumn , Column , IsNull, OneToMany, OneToOne, ManyToOne, JoinColumn,  } from "typeorm";
 import { EGender } from "../Enum/EGender.enum";
 import { EUserStatus } from "../Enum/EUserStatus.enum";
-import { Role } from "src/role/role.entity";
+import { Role } from "src/entities/role.entity";
 
 @Entity()
 export class User{

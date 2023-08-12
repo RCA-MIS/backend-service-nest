@@ -2,7 +2,7 @@
 import { Injectable } from "@nestjs/common/decorators/core/injectable.decorator";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Role } from "./role.entity";
+import { Role } from "../entities/role.entity";
 import { ERole } from "../Enum/ERole.enum";
 import { NotFoundException } from "@nestjs/common/exceptions/not-found.exception";
 
