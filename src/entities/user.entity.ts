@@ -3,11 +3,18 @@ import { Entity, PrimaryGeneratedColumn , Column , IsNull, OneToMany, OneToOne, 
 import { EGender } from "../Enum/EGender.enum";
 import { EUserStatus } from "../Enum/EUserStatus.enum";
 import { Role } from "src/entities/role.entity";
+import { InitiatorAudit } from "src/audits/Initiator.audit";
 
 @Entity()
-export class User{
+export class User extends InitiatorAudit{
     @PrimaryGeneratedColumn()
     id : number;
+
+    @Column()
+    firstName: String;
+
+    @Column()
+    lastName: String
 
     @Column()
     email : string;
@@ -36,17 +43,6 @@ export class User{
     @Column()
     password : string;
 
-    @Column({
-        default : new Date(Date.now())
-    })
-    created_at : Date;
-
-    @Column({
-        nullable : true,
-        default : null
-    })
-    updated_at : Date;
-
     @Column()
     activationCode : number;
 
@@ -59,15 +55,4 @@ export class User{
     @Column()
     national_id : string;
 
-    @Column({
-        nullable : true,
-        default : null
-    })
-    studentId : number;
-
-    @Column({
-        nullable : true,
-        default : null
-    })
-    teacherId : number;
 }
