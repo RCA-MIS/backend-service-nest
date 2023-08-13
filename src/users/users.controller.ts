@@ -1,8 +1,10 @@
 /* eslint-disable */ 
-import { Controller , Param ,Delete , Get, Body , Post } from '@nestjs/common';
+import { Controller , Param ,Delete , Get, Body , Post , Patch } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
+
 
 @Controller('users')
 export class UsersController {
@@ -31,8 +33,9 @@ export class UsersController {
        return this.usersService.createUser(body);
     }
 
-    updateUser(){
-
+    @Patch("/:id")
+    updateUser(@Param('id') id : number , @Body() body : UpdateUserDto){
+     return this.usersService.updateUser(id , body);
     }
 
     @Delete("/;id")

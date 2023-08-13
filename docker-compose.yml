@@ -1,0 +1,51 @@
+# version: '3.8'
+# services:
+#   api:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     depends_on:
+#       - postgres
+#     environment:
+#       DATABASE_URL: postgres://postgres:Bruno@1980@postgres:5432/rca-backend
+#       NODE_ENV: development
+#       PORT: 3000
+#     ports:
+#       - "8060:3000"
+#     networks:
+#       - rca-network
+
+#   postgres:
+#     image: postgres:latest
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: Bruno@1980
+#       POSTGRES_DB: rca-backend
+#     ports:
+#       - "35000:5432"
+#     networks:
+#       - rca-network
+
+# networks:
+#   rca-network:
+#     driver: bridge
+
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: 'postgres://jgwvrova:dtM4wG2jPYKsczgI0Qr-ks3L-byZlz_h@trumpet.db.elephantsql.com/jgwvrova'
+      NODE_ENV: development
+      PORT: 3000
+    ports:
+      - "8060:3000"
+    networks:
+      - rca-network
+
+networks:
+  rca-network:
+    driver: bridge
+
