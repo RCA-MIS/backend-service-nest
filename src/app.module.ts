@@ -11,6 +11,7 @@ import { OnModuleInit } from '@nestjs/common/interfaces';
 import { RoleModule } from './role/role.module';
 import { Role } from './entities/role.entity';
 import { log } from 'console';
+import { AppController } from './app/app.controller';
 
 
 @Module({
@@ -35,6 +36,7 @@ import { log } from 'console';
     StudentsModule,
     RoleModule,
    ],
+  controllers: [AppController],
 
 
 
