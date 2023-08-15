@@ -13,6 +13,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config'; // Import ConfigSe
 import { Teacher } from './entities/teacher.entity';
 import { Student } from './entities/student.entity';
 import { Report } from './entities/report.enity';
+import { AuthModule } from './auth/auth.module';
+import { TeachersService } from './teachers/teachers.service';
+import { UtilsModule } from './utils/utils.module';
+import { JwtModule } from '@nestjs/jwt';
+import { StudentsService } from './students/students.service';
 
 @Module({
   imports: [
@@ -35,15 +40,17 @@ import { Report } from './entities/report.enity';
     TeachersModule,
     StudentsModule,
     RoleModule,
+    AuthModule,
+    UtilsModule,
+    JwtModule
   ],
   controllers: [AppController],
 })
 export class AppModule implements OnModuleInit {
-  constructor(private readonly roleService: RoleService) {}
+  constructor(private readonly roleService: RoleService, private readonly teacherService: TeachersService) {}
 
   async onModuleInit() {
     const roles = await this.roleService.getAllRoles();
-    // log(roles);
     if (!roles || roles.length == 0) {
       this.roleService.createRoles();
     }

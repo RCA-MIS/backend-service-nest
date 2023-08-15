@@ -1,11 +1,13 @@
-import { Column, Entity } from "typeorm";
+import { ChildEntity, Column, Entity } from "typeorm";
 import { User } from "./user.entity";
 
-@Entity()
+@ChildEntity("teacher")
 export class Teacher extends User{
+
     @Column({
-        nullable : true,
-        default : null
+        nullable : false,
+        default : 343434
     })
+
     teacherId : number;
 }

@@ -13,7 +13,7 @@ import { EGender } from 'src/Enum/EGender.enum';
 export class UsersService {
 
     constructor(
-       @InjectRepository(User) private userRepo : Repository<User>,
+       @InjectRepository(User) public  userRepo : Repository<User>,
        private roleService : RoleService
     ){}
     
