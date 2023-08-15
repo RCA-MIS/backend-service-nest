@@ -11,6 +11,9 @@ import { OnModuleInit } from '@nestjs/common/interfaces';
 import { RoleModule } from './role/role.module';
 import { Role } from './entities/role.entity';
 import { log } from 'console';
+import { HomeController } from './home/home.controller';
+import { ProjectsModule } from './project/project.module';
+import { Project } from './entities/project.entity';
 
 
 @Module({
@@ -25,7 +28,7 @@ import { log } from 'console';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User , Role],
+        entities: [User , Role , Project],
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -34,7 +37,9 @@ import { log } from 'console';
     TeachersModule,
     StudentsModule,
     RoleModule,
+    ProjectsModule,
    ],
+  controllers: [HomeController],
 
 
 
