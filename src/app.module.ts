@@ -8,16 +8,14 @@ import { RoleService } from './roles/role.service';
 import { RoleModule } from './roles/role.module';
 import { Role } from './entities/role.entity';
 import { log } from 'console';
-import { AppController } from './app/app.controller';
-import { ConfigModule, ConfigService } from '@nestjs/config'; // Import ConfigService
-import { Teacher } from './entities/teacher.entity';
-import { Student } from './entities/student.entity';
-import { Report } from './entities/report.enity';
-import { AuthModule } from './auth/auth.module';
+import { HomeController } from './home/home.controller';
+import { ProjectsModule } from './project/project.module';
+import { Project } from './entities/project.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TeachersService } from './teachers/teachers.service';
-import { UtilsModule } from './utils/utils.module';
-import { JwtModule } from '@nestjs/jwt';
-import { StudentsService } from './students/students.service';
+import { Student } from './entities/student.entity';
+import { Teacher } from './entities/teacher.entity';
+
 
 @Module({
   imports: [
@@ -31,7 +29,7 @@ import { StudentsService } from './students/students.service';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, Role, Teacher, Student, Report],
+        entities: [User , Role , Project, Student, Teacher],
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -40,11 +38,10 @@ import { StudentsService } from './students/students.service';
     TeachersModule,
     StudentsModule,
     RoleModule,
-    AuthModule,
-    UtilsModule,
-    JwtModule
-  ],
-  controllers: [AppController],
+    ProjectsModule,
+   ],
+  controllers: [HomeController],
+
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly roleService: RoleService, private readonly teacherService: TeachersService) {}

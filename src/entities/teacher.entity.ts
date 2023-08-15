@@ -5,7 +5,7 @@ import { User } from "./user.entity";
 export class Teacher extends User{
 
     @Column({
-        nullable : false,
+        nullable : true,
         default : 343434
     })
 
