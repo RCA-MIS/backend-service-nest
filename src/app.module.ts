@@ -18,6 +18,8 @@ import { Teacher } from './entities/teacher.entity';
 import { MailingModule } from './mailing/mailing.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { AuthModule } from './auth/auth.module';
+import { AuthController } from './auth/auth.controller';
 
 
 @Module({
@@ -55,8 +57,9 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
     RoleModule,
     ProjectsModule,
     MailingModule,
+    AuthModule
    ],
-  controllers: [HomeController],
+  controllers: [AuthController, HomeController],
 
 })
 export class AppModule implements OnModuleInit {
@@ -64,6 +67,7 @@ export class AppModule implements OnModuleInit {
 
   async onModuleInit() {
     const roles = await this.roleService.getAllRoles();
+    // log(roles)
     if (!roles || roles.length == 0) {
       this.roleService.createRoles();
     }

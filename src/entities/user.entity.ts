@@ -32,7 +32,11 @@ export class User extends InitiatorAudit{
     })
     last_login : Date;
 
-    @Column()
+    @Column({
+        type:String,
+        enum:EGender,
+        default:EGender[EGender.MALE]
+    })
     gender : EGender;
 
     @Column({

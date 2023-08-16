@@ -1,9 +1,18 @@
 /* eslint-disable */ 
-import { IsString , IsNotEmpty, IsEnum, IsEmail, IsStrongPassword } from "class-validator";
+import { IsString , IsNotEmpty, IsEnum, IsEmail, IsStrongPassword, IsPhoneNumber } from "class-validator";
 import { EGender } from "../Enum/EGender.enum";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUserDto{
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    firstName : string;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    lastName : string;
     @IsString()
     @IsNotEmpty()
     @IsEmail()
@@ -17,9 +26,8 @@ export class CreateUserDto{
 
     @IsString()
     @IsNotEmpty()
-    @IsEnum(EGender)
     @ApiProperty()
-    myGender : EGender;
+    myGender : string;
 
     @IsString()
     @IsNotEmpty()
@@ -34,6 +42,7 @@ export class CreateUserDto{
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
+    @IsPhoneNumber()
     phonenumber : string;
 
     @IsString()
