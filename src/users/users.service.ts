@@ -3,12 +3,15 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm/dist';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common/exceptions';
+import { BadRequestException, NotFoundException, UnauthorizedException } from '@nestjs/common/exceptions';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { RoleService } from 'src/roles/role.service';
 import { EUserStatus } from 'src/Enum/EUserStatus.enum';
 import { EGender } from 'src/Enum/EGender.enum';
 import { MailingService } from 'src/mailing/mailing.service';
+import { UtilsService } from 'src/utils/utils.service';
+import { LoginDTO } from 'src/dtos/lodin.dto';
+import * as brcrypt from "bcrypt"
 
 @Injectable()
 export class UsersService {
@@ -16,7 +19,8 @@ export class UsersService {
     constructor(
        @InjectRepository(User) public  userRepo : Repository<User>,
        private roleService : RoleService,
-       private mailingService : MailingService
+       private mailingService : MailingService,
+       private utilsService: UtilsService
     ){}
     
     async getUsers(){
@@ -35,6 +39,15 @@ export class UsersService {
         }
         return response;
     }
+   async getUserByEmail(email:String){
+      const response = await this.userRepo.findOne({
+        where:{
+          email:email.toString()
+        }
+      })
+      if(!response) throw new BadRequestException("Invalid email or password");
+      return response;
+   }
 
      generateRandomFourDigitNumber(): number {
         const min = 1000;
@@ -42,17 +55,35 @@ export class UsersService {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
+      async login(dto:LoginDTO){
+        const user = await this.getUserByEmail(dto.email)
+        const tokens = this.utilsService.getTokens(user);
+        return tokens;
+      }
     async createUser(body : CreateUserDto){
-       const {email , username , myGender , registercode , national_id , phonenumber , password} = body;
+       let  {firstName, lastName, email , username , myGender , registercode , national_id , phonenumber , password} = body;
        if(registercode != "rcaKeyAdmin"){
         return new UnauthorizedException("Incorrect Registration Key")
        }
        const status : EUserStatus = EUserStatus.WAIT_EMAIL_VERIFICATION;
-       const role = await this.roleService.getRoleById(10);
-       const gender = EGender[myGender.toString()];
+       let gender;
+       const role = await this.roleService.getRoleById(1);
+       switch(myGender.toLowerCase()){
+        case 'male':
+          gender = EGender[EGender.MALE];
+          break;
+        case 'female':
+          gender = EGender[EGender.FEMALE];
+          break;
+        default:
+          throw new BadRequestException("The provided gender is invalid")
+       }
        const activationCode = this.generateRandomFourDigitNumber();
+       password =  await this.utilsService.hashString(password);
        try{
       const userEntity = this.userRepo.create({
+        firstName,
+        lastName,
         email,
         username,
         gender,
@@ -63,9 +94,10 @@ export class UsersService {
         role,
         activationCode
       })
-        this.userRepo.save(userEntity);
+        const createdEnity = this.userRepo.save(userEntity);
         await this.mailingService.sendVerificationEmail(userEntity.email.toString())
-        return userEntity;
+        console.log(createdEnity)
+        return {success:true, message : "we have sent an verification code to your inbox , please head their and verify your account"};
       }catch(error){
           console.log(error)
       }

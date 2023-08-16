@@ -24,6 +24,7 @@ export class RoleService{
         }
         
         async getRoleById(id : number){
+            console.log(id)
             const role = await this.roleRepo.findOne({
                 where : {
                     id : id

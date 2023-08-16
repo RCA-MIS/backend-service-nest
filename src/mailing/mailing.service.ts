@@ -62,7 +62,7 @@ export class MailingService {
                 code:'38320'
             }
         }).then((result) => {
-            console.log(result)
+            console.log("mail sent successfully")
         }).catch((error) => {
             console.log(error)
         })
