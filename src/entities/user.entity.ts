@@ -1,11 +1,12 @@
 /* eslint-disable */ 
-import { Entity, PrimaryGeneratedColumn , Column , IsNull, OneToMany, OneToOne, ManyToOne, JoinColumn,  } from "typeorm";
+import { Entity, PrimaryGeneratedColumn , Column , IsNull, OneToMany, OneToOne, ManyToOne, JoinColumn, BaseEntity, TableInheritance,  } from "typeorm";
 import { EGender } from "../Enum/EGender.enum";
 import { EUserStatus } from "../Enum/EUserStatus.enum";
 import { Role } from "src/entities/role.entity";
 import { InitiatorAudit } from "src/audits/Initiator.audit";
 
-@Entity()
+@Entity("users")
+@TableInheritance({column: {type:"varchar", name:"type"}})
 export class User extends InitiatorAudit{
     @PrimaryGeneratedColumn()
     id : number;

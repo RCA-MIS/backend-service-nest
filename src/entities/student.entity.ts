@@ -1,7 +1,7 @@
-import { Column, Entity } from "typeorm";
+import { ChildEntity, Column, Entity } from "typeorm";
 import { User } from "./user.entity";
 
-@Entity()
+@ChildEntity("student")
 export class Student extends User{
     constructor(){
         super()
@@ -11,5 +11,7 @@ export class Student extends User{
         default : null
     })
     studentId : number;
+
+    
 
 }

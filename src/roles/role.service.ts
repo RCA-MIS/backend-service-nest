@@ -11,7 +11,6 @@ export class RoleService{
     constructor(
         @InjectRepository(Role) private roleRepo : Repository<Role>,
         ){}
-
         createRoles(){
             const roleArray : Array<ERole> = [ERole.ADMIN , ERole.STUDENT , ERole.TEACHER];
             roleArray.forEach(role => {
