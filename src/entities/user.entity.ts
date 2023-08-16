@@ -1,7 +1,7 @@
 /* eslint-disable */ 
 import { Entity, PrimaryGeneratedColumn , Column , IsNull, OneToMany, OneToOne, ManyToOne, JoinColumn, BaseEntity, TableInheritance,  } from "typeorm";
 import { EGender } from "../Enum/EGender.enum";
-import { EUserStatus } from "../Enum/EUserStatus.enum";
+import { EAccountStatus } from "../Enum/EAccountStatus.enum";
 import { Role } from "src/entities/role.entity";
 import { InitiatorAudit } from "src/audits/Initiator.audit";
 
@@ -52,7 +52,7 @@ export class User extends InitiatorAudit{
     activationCode : number;
 
     @Column()
-    status : EUserStatus;
+    status : String;
 
     @ManyToOne(()=> Role )
     role : Role;

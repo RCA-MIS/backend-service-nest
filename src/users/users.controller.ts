@@ -4,8 +4,10 @@ import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 
+@ApiTags("users")
 @Controller('users')
 export class UsersController {
     constructor(

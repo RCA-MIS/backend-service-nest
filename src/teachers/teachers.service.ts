@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { useContainer } from 'class-validator';
 import { EGender } from 'src/Enum/EGender.enum';
-import { EUserStatus } from 'src/Enum/EUserStatus.enum';
+import { EAccountStatus } from 'src/Enum/EAccountStatus.enum';
 import { Role } from 'src/entities/role.entity';
 import { Teacher } from 'src/entities/teacher.entity';
 import { User } from 'src/entities/user.entity';
@@ -28,7 +28,7 @@ async createTeacher (){
     user.phonenumber = "234234234234";
     user.password = "vava2003@gmail.com";
     user.gender = EGender.FEMALE;
-    user.status = EUserStatus.ACTIVE;
+    user.status = EAccountStatus[EAccountStatus.ACTIVE];
     user.profile_pic = "fsdfsdf"
 
     const createdEntity = this.teacherRepo.create(user);

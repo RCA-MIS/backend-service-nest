@@ -1,4 +1,4 @@
 /* eslint-disable */ 
-export enum EUserStatus {
+export enum EAccountStatus {
     WAIT_EMAIL_VERIFICATION , PENDING ,ACTIVE
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EGender } from 'src/Enum/EGender.enum';
-import { EUserStatus } from 'src/Enum/EUserStatus.enum';
+import {  EAccountStatus } from 'src/Enum/EAccountStatus.enum';
 import { Student } from 'src/entities/student.entity';
 import { User } from 'src/entities/user.entity';
 import { MailingService } from 'src/mailing/mailing.service';
@@ -24,7 +24,7 @@ export class StudentsService {
         student.username = "muyoyo";
         student.password = "vava2003";
         student.gender = EGender.FEMALE;
-        student.status = EUserStatus.ACTIVE;
+        student.status = EAccountStatus[EAccountStatus.ACTIVE];
         student.national_id = "343434";
         const createdEntity = await this.studentRepo.create(student);
         await this.studentRepo.save(createdEntity)
