@@ -11,6 +11,7 @@ import { log } from 'console';
 import { HomeController } from './home/home.controller';
 import { ProjectsModule } from './project/project.module';
 import { Project } from './entities/project.entity';
+import { NewsModule } from './news/news.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TeachersService } from './teachers/teachers.service';
 import { Student } from './entities/student.entity';
@@ -20,6 +21,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
+
 
 
 @Module({
@@ -56,6 +58,7 @@ import { AuthController } from './auth/auth.controller';
     StudentsModule,
     RoleModule,
     ProjectsModule,
+    NewsModule,
     MailingModule,
     AuthModule
    ],
