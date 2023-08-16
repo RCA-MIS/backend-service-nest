@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { LoginDTO } from 'src/dtos/lodin.dto';
 import { UsersService } from 'src/users/users.service';
@@ -6,7 +7,9 @@ import { ApiResponse } from 'src/payload/ApiResponse';
 import { VerifyAccountDTO } from 'src/dtos/verifyAccount.dto';
 import { User } from 'src/entities/user.entity';
 import { ResetPasswordDTO } from 'src/dtos/resetPassword.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("auth")
 @Controller('auth')
 export class AuthController {
     public isUserAvailable :User;

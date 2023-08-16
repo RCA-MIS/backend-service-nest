@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Module, OnModuleInit } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { StudentsModule } from './students/students.module';
@@ -7,7 +8,6 @@ import { User } from './entities/user.entity';
 import { RoleService } from './roles/role.service';
 import { RoleModule } from './roles/role.module';
 import { Role } from './entities/role.entity';
-import { log } from 'console';
 import { HomeController } from './home/home.controller';
 import { ProjectsModule } from './project/project.module';
 import { Project } from './entities/project.entity';

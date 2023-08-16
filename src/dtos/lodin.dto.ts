@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsString, IsStrongPassword } from "class-validator";
 
@@ -6,11 +7,11 @@ export class LoginDTO{
     @IsNotEmpty()
     @IsEmail()
     @ApiProperty()
-    email : String;
+    email : string;
 
     @IsStrongPassword()
     @IsNotEmpty()
     @IsString()
     @ApiProperty()
-    password: String
+    password: string
 }

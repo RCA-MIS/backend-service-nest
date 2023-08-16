@@ -4,7 +4,9 @@ import { NewsService } from './news.service';
 import { NotFoundException } from '@nestjs/common';
 import { CreateNewsDto } from 'src/dtos/create-news.dto';
 import { UpdateNewsDto } from 'src/dtos/update-news.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("news")
 @Controller('news')
 export class NewsController {
     constructor(

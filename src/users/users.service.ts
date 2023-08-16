@@ -13,6 +13,7 @@ import { UtilsService } from 'src/utils/utils.service';
 import { LoginDTO } from 'src/dtos/lodin.dto';
 import * as brcrypt from "bcrypt"
 import { VerifyAccountDTO } from 'src/dtos/verifyAccount.dto';
+import { EUserStatus } from 'src/Enum/EUserStatus.enum';
 
 @Injectable()
 export class UsersService {
@@ -49,15 +50,6 @@ export class UsersService {
         }
         return response;
     }
-   async getUserByEmail(email:String){
-      const response = await this.userRepo.findOne({
-        where:{
-          email:email.toString()
-        }
-      })
-      if(!response) throw new BadRequestException("Invalid email or password");
-      return response;
-   }
 
      generateRandomFourDigitNumber(): number {
         const min = 1000;
@@ -71,7 +63,7 @@ export class UsersService {
         const tokens = this.utilsService.getTokens(user);
         return tokens;
       }
-      async verifyAccount(email:String){
+      async verifyAccount(email:string){
         const verifiedAccount = await this.getUserByEmail(email);
         if(verifiedAccount.status === EAccountStatus[EAccountStatus.ACTIVE]) throw new BadRequestException("This is already verified")
         verifiedAccount.status = EAccountStatus[EAccountStatus.ACTIVE];
@@ -80,8 +72,9 @@ export class UsersService {
         delete verifiedAccount2.password;
         return {tokens, user:verifiedAccount2}
       }
-      async resetPassword(email:String, activationCode:number, newPassword:String){
+      async resetPassword(email:string, activationCode:number, newPassword:string){
         const account = await this.getUserByEmail(email);
+        if(!account) throw new BadRequestException("This account does not exist")
         if(account.status === EAccountStatus[EAccountStatus.PENDING] || account.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION]) throw new BadRequestException("Please first verify your account and we'll help you to remember your password later");
         if(account.activationCode != activationCode) throw new BadRequestException("Your provided invalid activation code, you can request another.");
         account.password = await this.utilsService.hashString(newPassword.toString());
@@ -98,9 +91,7 @@ export class UsersService {
        }
        const userFetched = await this.getUserByEmail(email);
         if(userFetched) return new UnauthorizedException("Email already exists");
-       const status : EUserStatus = EUserStatus.WAIT_EMAIL_VERIFICATION;
-       const role = await this.roleService.getRoleById(10);
-       const gender = EGender[myGender.toString()];
+
        const status : String = EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION].toString();
        let gender;
        const role = await this.roleService.getRoleById(1);
