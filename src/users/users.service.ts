@@ -8,13 +8,15 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import { RoleService } from 'src/roles/role.service';
 import { EUserStatus } from 'src/Enum/EUserStatus.enum';
 import { EGender } from 'src/Enum/EGender.enum';
+import { MailingService } from 'src/mailing/mailing.service';
 
 @Injectable()
 export class UsersService {
 
     constructor(
        @InjectRepository(User) public  userRepo : Repository<User>,
-       private roleService : RoleService
+       private roleService : RoleService,
+       private mailingService : MailingService
     ){}
     
     async getUsers(){
@@ -62,6 +64,7 @@ export class UsersService {
         activationCode
       })
         this.userRepo.save(userEntity);
+        await this.mailingService.sendVerificationEmail(userEntity.email.toString())
         return userEntity;
       }catch(error){
           console.log(error)

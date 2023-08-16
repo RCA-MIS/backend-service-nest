@@ -1,10 +1,12 @@
 /* eslint-disable */ 
 import { IsString , IsNotEmpty, IsEnum } from "class-validator";
 import { EGender } from "../Enum/EGender.enum";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUserDto{
     @IsString()
     @IsNotEmpty()
+    @ApiProperty()
     email : string;
     
     @IsString()

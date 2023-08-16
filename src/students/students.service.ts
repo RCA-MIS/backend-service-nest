@@ -4,13 +4,17 @@ import { EGender } from 'src/Enum/EGender.enum';
 import { EUserStatus } from 'src/Enum/EUserStatus.enum';
 import { Student } from 'src/entities/student.entity';
 import { User } from 'src/entities/user.entity';
+import { MailingService } from 'src/mailing/mailing.service';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class StudentsService {
-    constructor(@InjectRepository(Student) private studentRepo:Repository<Student>){}
+    constructor(
+        @InjectRepository(Student) private studentRepo:Repository<Student>,
+        private mailingService : MailingService
+        ){}
 
-   async createStudent(){
+   async createStudent(reciever: String){
         const student : Student = new Student();
         student.activationCode = 3434;
         student.email = "valens@gmail.com";

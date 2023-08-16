@@ -33,7 +33,7 @@ async createTeacher (){
 
     const createdEntity = this.teacherRepo.create(user);
      const createddEnity =  this.teacherRepo.save(createdEntity);
-     console.log(await this.teacherRepo.find({}));
+     console.log(await this.teacherRepo.find());
     return  this.userService.userRepo.save(createdEntity)
 }
 

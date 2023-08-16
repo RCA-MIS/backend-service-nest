@@ -7,7 +7,6 @@ export class StudentsController {
     constructor(@Inject(StudentsService) private studentService:StudentsService){}
     @Post('create')
     createStudent(){
-        return this.studentService.createStudent()
     }
 
 }
