@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
@@ -6,7 +7,7 @@ export class VerifyAccountDTO{
     @IsNotEmpty()
     @IsEmail()
     @ApiProperty()
-    email:String;
+    email:string;
 
     // @IsNumber()
     @IsNotEmpty()

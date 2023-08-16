@@ -4,7 +4,9 @@ import { ProjectService } from './project.service';
 import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
 import { CreateProjectDto } from 'src/dtos/create-project.dto';
 import { UpdateProjectDto } from 'src/dtos/update-project.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("projects")
 @Controller('projects')
 export class ProjectController {
     constructor(
