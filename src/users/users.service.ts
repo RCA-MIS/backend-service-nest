@@ -22,6 +22,15 @@ export class UsersService {
         return response;
     }
 
+    
+    async getUserByEmail(email : string){
+      return await this,this.userRepo.findOne({
+        where : {
+          email : email
+        }
+      })
+  }
+
     async getUserById(id : number){
         const response = await this.userRepo.findOne({
             where :{
@@ -45,6 +54,8 @@ export class UsersService {
        if(registercode != "rcaKeyAdmin"){
         return new UnauthorizedException("Incorrect Registration Key")
        }
+       const userFetched = await this.getUserByEmail(email);
+        if(userFetched) return new UnauthorizedException("Email already exists");
        const status : EUserStatus = EUserStatus.WAIT_EMAIL_VERIFICATION;
        const role = await this.roleService.getRoleById(10);
        const gender = EGender[myGender.toString()];

@@ -14,6 +14,7 @@ import { log } from 'console';
 import { HomeController } from './home/home.controller';
 import { ProjectsModule } from './project/project.module';
 import { Project } from './entities/project.entity';
+import { NewsModule } from './news/news.module';
 
 
 @Module({
@@ -38,6 +39,7 @@ import { Project } from './entities/project.entity';
     StudentsModule,
     RoleModule,
     ProjectsModule,
+    NewsModule,
    ],
   controllers: [HomeController],
 
