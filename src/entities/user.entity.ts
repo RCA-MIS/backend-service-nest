@@ -1,5 +1,5 @@
 /* eslint-disable */ 
-import { Entity, PrimaryGeneratedColumn , Column , IsNull, OneToMany, OneToOne, ManyToOne, JoinColumn, BaseEntity, TableInheritance,  } from "typeorm";
+import { Entity, PrimaryGeneratedColumn , Column , IsNull, OneToMany, OneToOne, ManyToOne, JoinColumn, BaseEntity, TableInheritance, ManyToMany,  } from "typeorm";
 import { EGender } from "../Enum/EGender.enum";
 import { EAccountStatus } from "../Enum/EAccountStatus.enum";
 import { Role } from "src/entities/role.entity";
@@ -54,8 +54,8 @@ export class User extends InitiatorAudit{
     @Column()
     status : String;
 
-    @ManyToOne(()=> Role )
-    role : Role;
+    @ManyToMany(()=> Role )
+    roles : Role[];
 
     @Column()
     national_id : string;

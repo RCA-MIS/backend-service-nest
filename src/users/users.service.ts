@@ -113,9 +113,10 @@ export class UsersService {
         phonenumber,
         password,
         status,
-        role,
+        // role,
         activationCode
-      })
+      });
+        userEntity.roles.push(role);
         const createdEnity = this.userRepo.save(userEntity);
         await this.mailingService.sendVerificationEmail(userEntity.email.toString())
         console.log(createdEnity)

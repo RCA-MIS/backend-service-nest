@@ -1,19 +1,21 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, ExecutionContext, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/entities/user.entity';
 import * as  bcrypt from "bcrypt"
+import { decode } from 'punycode';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class UtilsService {
     constructor( private config: ConfigService,  private  jwt:JwtService )  {} 
 
     async getTokens(user: User) : Promise<{accessToken: String, refreshToken:String}>{
-        const accessToken : String = await this.jwt.signAsync({roles:user.role, id:user.id, national_id:user.national_id}, {
+        const accessToken : String = await this.jwt.signAsync({roles:user.roles, id:user.id, national_id:user.national_id}, {
             expiresIn:"10m",
             secret:this.config.get('SECRETE_KEY')
         });
-        const refreshToken  : String= await this.jwt.signAsync({roles:user.role, id:user.id, national_id:user.national_id}, {
+        const refreshToken  : String= await this.jwt.signAsync({roles:user.roles, id:user.id, national_id:user.national_id}, {
             expiresIn:"1d",
             secret:this.config.get('SECRETE_KEY')
         });

@@ -6,7 +6,9 @@ import { ApiResponse } from 'src/payload/ApiResponse';
 import { VerifyAccountDTO } from 'src/dtos/verifyAccount.dto';
 import { User } from 'src/entities/user.entity';
 import { ResetPasswordDTO } from 'src/dtos/resetPassword.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
     public isUserAvailable :User;
@@ -31,6 +33,5 @@ export class AuthController {
     @Post('reset_password')
     async resetPassword(@Body() dto:ResetPasswordDTO) : Promise<ApiResponse>{
         return new ApiResponse(true, "Your account was rest successfully ", await this.userService.resetPassword(dto.email, dto.activationCode, dto.newPassword))
-        
     }
 }

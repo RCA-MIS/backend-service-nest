@@ -1,14 +1,18 @@
 /* eslint-disable */ 
-import { Controller , Param ,Delete , Get, Body , Post , Patch } from '@nestjs/common';
+import { Controller , Param ,Delete , Get, Body , Post , Patch, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/utils/decorators/roles.decorator';
+import { ERole } from 'src/Enum/ERole.enum';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 
 @ApiTags("users")
 @Controller('users')
+@UseGuards(RolesGuard)
 export class UsersController {
     constructor(
         private usersService: UsersService
@@ -17,6 +21,7 @@ export class UsersController {
     }
 
     @Get('/all')
+    @Roles(ERole.STUDENT)
     getUsers(){
      return this.usersService.getUsers();
     }
