@@ -11,7 +11,6 @@ export class RoleService{
     constructor(
         @InjectRepository(Role) private roleRepo : Repository<Role>,
         ){}
-
         createRoles(){
             const roleArray : Array<ERole> = [ERole.ADMIN , ERole.STUDENT , ERole.TEACHER];
             roleArray.forEach(role => {
@@ -25,6 +24,7 @@ export class RoleService{
         }
         
         async getRoleById(id : number){
+            console.log(id)
             const role = await this.roleRepo.findOne({
                 where : {
                     id : id
