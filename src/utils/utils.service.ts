@@ -23,7 +23,6 @@ export class UtilsService {
         }
 
     }
-
     async hashString(input) {
         try {
             if (typeof input !== 'string') {
