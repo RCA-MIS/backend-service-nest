@@ -1,6 +1,6 @@
 /* eslint-disable */ 
 import { IsEmail, IsNotEmpty, IsOptional, IsString, Max , IsEnum } from "class-validator";
-import { EProjectStatus } from "src/Enum/EProjectStatus.enum";
+import { EProjectStatus } from "../Enum/EProjectStatus.enum";
 
 export class UpdateProjectDto{
     @IsOptional()
