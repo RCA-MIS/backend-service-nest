@@ -7,6 +7,7 @@ import { Serializable } from "worker_threads";
     strategy:"exposeAll"
 })
 export abstract class TimeStampAudit{
+    constructor(){}
     @CreateDateColumn({name:"created_at", default: new Date(Date.now())})
     createdAt: Date;
 

@@ -1,3 +1,7 @@
+/* eslint-disable */
 export enum ERole {
-    ADMIN , STUDENT , TEACHER
+  ADMIN,
+  STUDENT,
+  TEACHER,
+  PUBLISHER,
 }

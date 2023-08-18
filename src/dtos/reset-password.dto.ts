@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ApiOperation, ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsNumber, IsString, IsStrongPassword } from "class-validator";
 
@@ -6,13 +7,13 @@ export class ResetPasswordDTO{
     @IsEmail()
     @IsNotEmpty()
     @ApiProperty()
-    email:String;
+    email:string;
 
     @IsString()
     @IsStrongPassword()
     @IsNotEmpty()
     @ApiProperty()
-    newPassword:String;
+    newPassword:string;
 
     @IsNumber()
     @IsNotEmpty()

@@ -1,63 +1,102 @@
-/* eslint-disable */ 
-import { Entity, PrimaryGeneratedColumn , Column , IsNull, OneToMany, OneToOne, ManyToOne, JoinColumn, BaseEntity, TableInheritance, ManyToMany,  } from "typeorm";
-import { EGender } from "../Enum/EGender.enum";
-import { EAccountStatus } from "../Enum/EAccountStatus.enum";
-import { Role } from "src/entities/role.entity";
-import { InitiatorAudit } from "src/audits/Initiator.audit";
+/* eslint-disable */
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  IsNull,
+  OneToMany,
+  OneToOne,
+  ManyToOne,
+  JoinColumn,
+  BaseEntity,
+  TableInheritance,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { EGender } from '../Enum/EGender.enum';
+import { EAccountStatus } from '../Enum/EAccountStatus.enum';
+import { Role } from 'src/entities/role.entity';
+import { InitiatorAudit } from 'src/audits/Initiator.audit';
+import { File } from '../fileHandling/File';
+@Entity('users')
+@TableInheritance({ column: { type: 'varchar', name: 'type' } })
+export class User extends InitiatorAudit {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-@Entity("users")
-@TableInheritance({column: {type:"varchar", name:"type"}})
-export class User extends InitiatorAudit{
-    @PrimaryGeneratedColumn()
-    id : number;
+  @Column()
+  firstName: String;
 
-    @Column()
-    firstName: String;
+  @Column()
+  lastName: String;
 
-    @Column()
-    lastName: String
+  @Column()
+  email: String;
 
-    @Column()
-    email : string;
+  @Column()
+  username: String;
 
-    @Column()
-    username : string;
+  @Column()
+  phonenumber: String;
 
-    @Column()
-    phonenumber : string = "";
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  last_login: Date;
 
-    @Column({
-        nullable : true,
-        default : null
-    })
-    last_login : Date;
+  @Column({
+    type: String,
+    enum: EGender,
+    default: EGender[EGender.MALE],
+  })
+  gender: EGender;
+  @JoinColumn({
+    name: 'profile_picture',
+  })
+  profile_pic: File;
 
-    @Column({
-        type:String,
-        enum:EGender,
-        default:EGender[EGender.MALE]
-    })
-    gender : EGender;
+  @Column({
+    nullable: true,
+  })
+  password: String;
 
-    @Column({
-        nullable : true,
-        default : null
-    })
-    profile_pic : string;
+  @Column({
+    nullable: true,
+  })
+  activationCode: number;
 
-    @Column()
-    password : string;
+  @Column()
+  status: String;
 
-    @Column()
-    activationCode : number;
+  @ManyToMany(() => Role)
+  @JoinTable()
+  roles: Role[];
 
-    @Column()
-    status : String;
+  @Column()
+  national_id: String;
 
-    @ManyToMany(()=> Role )
-    roles : Role[];
-
-    @Column()
-    national_id : string;
-
+  constructor(
+    firstName: String,
+    lastName: String,
+    email: String,
+    username: String,
+    myGender: EGender,
+    national_id: String,
+    phonenumber: String,
+    password: String,
+    status: EAccountStatus,
+  ) {
+    super();
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.username = username;
+    this.gender = myGender;
+    // this.profile_pic=this.profile_pic
+    this.national_id = national_id;
+    this.phonenumber = phonenumber;
+    this.password = password;
+    this.status = EAccountStatus[status];
+  }
 }

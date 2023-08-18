@@ -1,49 +1,63 @@
-import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { Role } from "src/entities/role.entity";
-import { KEY_ROLES } from "../../utils/decorators/roles.decorator";
-import { ERole } from "src/Enum/ERole.enum";
-import { JwtService } from "@nestjs/jwt";
-import { ConfigService } from "@nestjs/config";
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+  Inject,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Reflector } from '@nestjs/core';
+import { JwtService } from '@nestjs/jwt';
+import { ERole } from 'src/Enum/ERole.enum';
+import { Role } from 'src/entities/role.entity';
+import { User } from 'src/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
-export class RolesGuard implements CanActivate{
-    constructor(
-        public reflector: Reflector,
-    private readonly jwtService: JwtService,
-    private readonly configService : ConfigService
-    ){}
-  async canActivate(context : ExecutionContext) : Promise<boolean>{
-        const requiredRoles = this.reflector.getAll<ERole[]>(KEY_ROLES, [
-            context.getHandler,
-            context.getClass()
-        ]);
-        if(!requiredRoles) return true;
-        const { user } = context.switchToHttp().getRequest();
-        // console.log(context.switchToHttp().getRequest())
-        // user.role.map((userRole: Role) => {
-        //      if(requiredRoles.some((requestRole) => userRole.role_name == ERole[requestRole])) return true;
-        // })
-    const request = context.switchToHttp().getRequest();
-    const token = this.getToken(request);
-    if (!token) {
-      throw new UnauthorizedException('Authorization token is required');
+export class RolesGuard implements CanActivate {
+  constructor(
+    private reflector: Reflector,
+    @Inject(JwtService) private jwtService: JwtService,
+    @Inject(ConfigService) private configService: ConfigService,
+    @Inject(UsersService) private userService: UsersService,
+  ) {}
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const requiredRoles = this.reflector.getAllAndOverride<String[]>('roles', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (!requiredRoles) {
+      return true;
+    }
+    const req = context.switchToHttp().getRequest();
+    const authorization = req.headers.authorization;
+    let user: User = null;
+    if (authorization) {
+      const token = authorization.split(' ')[1];
+      if (!authorization.toString().startsWith('Bearer '))
+        throw new UnauthorizedException('The provided token is invalid');
+      const { tokenVerified, error } = this.jwtService.verify(token, {
+        secret: this.configService.get('SECRET_KEY'),
+      });
+      if (error) throw new UnauthorizedException(error.message);
+      const details: any = await this.jwtService.decode(token);
+      user = await this.userService.getUserById(details.id, 'User');
     }
 
-    try {
-      const payload = await this.jwtService.verifyAsync(
-        token,
-        this.configService.get('SECRET_KEY'),
+    let type: boolean = false;
+    user.roles.forEach((role1: Role) => {
+      requiredRoles.forEach((requiredRole: String) => {
+        if (requiredRole.toUpperCase() == role1.role_name) {
+          type = true;
+        }
+      });
+    });
+    if (type == false)
+      throw new UnauthorizedException(
+        `This resource is only for ${requiredRoles
+          .toLocaleString()
+          .toUpperCase()}`,
       );
-      console.log(payload)
-    } catch (error) {
-      throw new UnauthorizedException(error.message);
-    }
-    return true;
-  }
-
-  private getToken(request: any) {
-    const [_, token] = request.headers.authorization?.split(' ') ?? [];
-    return token;
+    return type;
   }
 }

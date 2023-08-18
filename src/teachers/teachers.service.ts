@@ -1,41 +1,83 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { useContainer } from 'class-validator';
 import { EGender } from 'src/Enum/EGender.enum';
-import { EAccountStatus } from 'src/Enum/EAccountStatus.enum';
-import { Role } from 'src/entities/role.entity';
 import { Teacher } from 'src/entities/teacher.entity';
-import { User } from 'src/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
+import { CreateTeacherDTO } from 'src/dtos/create-teacher.dto';
+import { UpdateUserDto } from 'src/dtos/update-user.dto';
+import { EAccountStatus } from 'src/Enum/EAccountStatus.enum';
 
 @Injectable()
 export class TeachersService {
-constructor(
+  constructor(
     @InjectRepository(Teacher) private teacherRepo: Repository<Teacher>,
-    @Inject(UsersService) private userService: UsersService
- 
-){}
+    @Inject(UsersService) private userService: UsersService,
+  ) {}
 
-async createTeacher (){
-    const user : Teacher = new Teacher();
-    user.activationCode = 3434;
-    user.lastName = "valens";
-    user.firstName = "xckjvhxcvjlk";
-    user.email = "valens@gmail.com";
-    user.national_id = "45454545";
-    user.username = "valens";
-    user.phonenumber = "234234234234";
-    user.password = "vava2003@gmail.com";
-    user.gender = EGender.FEMALE;
-    user.status = EAccountStatus[EAccountStatus.ACTIVE];
-    user.profile_pic = "fsdfsdf"
+  async createTeacher(dto: CreateTeacherDTO) {
+    let gender: any;
+    switch (dto.myGender.toLowerCase()) {
+      case 'male':
+        gender = EGender[EGender.MALE];
+        break;
+      case 'female':
+        gender = EGender[EGender.FEMALE];
+        break;
+      default:
+        throw new BadRequestException('The provided gender is invalid');
+    }
+    const teacher: Teacher = new Teacher(
+      dto.firstName,
+      dto.lastName,
+      dto.email,
+      dto.username,
+      gender,
+      dto.national_id,
+      dto.phonenumber,
+      dto.password,
+      EAccountStatus.WAIT_EMAIL_VERIFICATION,
+    );
 
-    const createdEntity = this.teacherRepo.create(user);
-     const createddEnity =  this.teacherRepo.save(createdEntity);
-     console.log(await this.teacherRepo.find());
-    return  this.userService.userRepo.save(createdEntity)
-}
+    return this.teacherRepo.save(teacher);
+  }
 
+  async updateTeacher(id: number, dto: UpdateUserDto) {
+    const isTeachervailable: Teacher = await this.getTeacher(id);
+    if (!isTeachervailable)
+      throw new NotFoundException('The teacher with provided id is not found');
+    Object.assign(isTeachervailable, dto);
+    return this.teacherRepo.save(isTeachervailable);
+  }
 
+  async deleteTeacher(id: number) {
+    const isTeachervailable: Teacher = await this.getTeacher(id);
+    await this.teacherRepo.remove(isTeachervailable);
+  }
+  async deleteAllTeachers() {
+    const allteachers: Teacher[] = await this.teacherRepo.find();
+    if (allteachers.length <= 0)
+      throw new ForbiddenException('There are no registered teachers');
+    allteachers.forEach((teacher) => {
+      this.teacherRepo.remove(teacher);
+    });
+  }
+  async getAllTeachers() {
+    return await this.teacherRepo.find();
+  }
+
+  async getTeacher(id: number): Promise<Teacher> {
+    const availableTeacher = await this.teacherRepo.findOne({
+      where: { id: id },
+    });
+    if (!availableTeacher)
+      throw new NotFoundException('The teacher with provided id is not found');
+    return availableTeacher;
+  }
 }

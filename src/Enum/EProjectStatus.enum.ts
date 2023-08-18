@@ -1,4 +1,5 @@
-/* eslint-disable */
- export enum EProjectStatus {
-    DEVELOPMENT , IDEATION , PRODUCTION 
+export enum EProjectStatus {
+  REJECETED,
+  PENDING,
+  APPROVED,
 }
