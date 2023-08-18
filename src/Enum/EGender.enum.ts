@@ -1,4 +1,5 @@
-/* eslint-disable */ 
+/* eslint-disable */
 export enum EGender {
-    MALE , FEMALE
+  MALE,
+  FEMALE,
 }

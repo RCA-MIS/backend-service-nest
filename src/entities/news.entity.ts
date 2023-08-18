@@ -1,28 +1,27 @@
-/* eslint-disable */ 
-import { User } from "./user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+/* eslint-disable */
+import { User } from './user.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class News{
-    @PrimaryGeneratedColumn()
-    id : number;
+export class News {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    title : string;
+  @Column()
+  title: string;
 
-    @Column()
-    description : string;
+  @Column()
+  description: string;
 
-    @Column()
-    @ManyToOne(() => User)
-    writer : User;
+  @ManyToOne(() => User)
+  writer: User;
 
-    @Column()
-    likes : number;
+  @Column()
+  likes: number;
 
-    @Column()
-    createdAt : Date
+  @Column()
+  createdAt: Date;
 
-    @Column()
-    updatedAt : Date
+  @Column()
+  updatedAt: Date;
 }

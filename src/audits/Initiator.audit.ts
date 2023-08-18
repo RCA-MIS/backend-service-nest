@@ -7,6 +7,9 @@ import { Column } from "typeorm";
     strategy:'excludeAll'
 })
 export abstract class InitiatorAudit extends TimeStampAudit{
+    constructor(){
+        super()
+    }
 
     createdBy: String;
     updatedBy: String;

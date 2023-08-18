@@ -1,47 +1,54 @@
-/* eslint-disable */ 
-import { Controller , Param ,Delete , Get, Body , Post , Patch } from '@nestjs/common';
+/* eslint-disable */
+import {
+  Controller,
+  Param,
+  Delete,
+  Get,
+  Body,
+  Post,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
-
-@ApiTags("users")
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
-    constructor(
-        private usersService: UsersService
-    ){
+  constructor(private usersService: UsersService) {}
 
-    }
+  @Get('/all')
+  @Roles('ADMIN')
+  getUsers() {
+    return this.usersService.getUsers();
+  }
 
-    @Get('/all')
-    getUsers(){
-     return this.usersService.getUsers();
+  @Get('/:id')
+  async getUserById(@Param('id') id: number) {
+    const user = await this.usersService.getUserById(id, 'User');
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+    return user;
+  }
 
-    @Get("/:id")
-    async  getUserById( @Param('id') id : number ){
-     const user = await this.usersService.getUserById(id);
-     if(!user){
-            throw new NotFoundException('User not found');
-     }
-     return user;
-    }
+  @Post('/create')
+  @Roles('ADMIN', 'TEACHER')
+  createAdminAccount(@Body() body: CreateUserDto) {
+    return this.usersService.createUser(body);
+  }
 
-    @Post('/create')
-    createAdminAccount(@Body() body : CreateUserDto){
-       return this.usersService.createUser(body);
-    }
+  @Patch('update/:id')
+  updateUser(@Param('id') id: number, @Body() body: UpdateUserDto) {
+    return this.usersService.updateUser(id, body);
+  }
 
-    @Patch("update/:id")
-    updateUser(@Param('id') id : number , @Body() body : UpdateUserDto){
-     return this.usersService.updateUser(id , body);
-    }
-
-    @Delete("delete/;id")
-deleteUser(@Param('id') id:number){
-        return this.usersService.deleteUser(id);
-    }
+  @Delete('delete/;id')
+  deleteUser(@Param('id') id: number) {
+    return this.usersService.deleteUser(id);
+  }
 }
