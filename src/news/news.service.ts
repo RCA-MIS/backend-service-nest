@@ -48,7 +48,6 @@ export class NewsService {
       data: newsEntity,
     };
   }
-
   async updateNews(id: number, attrs: Partial<News>) {
     const news = await this.newsRepo.findOne({
       where: {
