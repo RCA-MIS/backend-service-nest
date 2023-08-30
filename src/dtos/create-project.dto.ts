@@ -2,9 +2,9 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString, Max } from "class-validator";
 import { EProjectStatus } from "src/Enum/EProjectStatus.enum";
 export class CreateProjectDto{
-    @IsNotEmpty()
-    @IsString({message: 'Title must be a string'})
-    @Max(20)
+     @IsNotEmpty()
+     @IsString({message: 'Title must be a string'})
+     @Max(20)
      name: string;
 
      @IsNotEmpty()
