@@ -32,6 +32,8 @@ import { WebContent } from './entities/webcontent.entity';
 import { News } from './entities/news.entity';
 import { File } from './fileHandling/File';
 import { Report } from './entities/report.enity';
+import { MarksModule } from './marks/marks.module';
+import { TermModule } from './term/term.module';
 
 @Module({
   imports: [
@@ -82,6 +84,8 @@ import { Report } from './entities/report.enity';
     MailingModule,
     AuthModule,
     WebContentModule,
+    MarksModule,
+    TermModule,
   ],
   controllers: [AuthController, HomeController],
 })
