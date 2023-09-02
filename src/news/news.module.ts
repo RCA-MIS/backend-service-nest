@@ -11,5 +11,6 @@ import { FilesModule } from 'src/files/files.module';
   controllers: [NewsController],
   imports: [TypeOrmModule.forFeature([News]), UsersModule , FilesModule],
   providers: [NewsService],
+  exports : [NewsService]
 })
 export class NewsModule {}

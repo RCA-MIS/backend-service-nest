@@ -10,6 +10,7 @@ import { FilesModule } from 'src/files/files.module';
 @Module({
   controllers: [ProjectController],
   imports : [TypeOrmModule.forFeature([Project]) , UsersModule , FilesModule],
-  providers: [ProjectService]
+  providers: [ProjectService],
+  exports : [ProjectService]
 })
 export class ProjectsModule {}
