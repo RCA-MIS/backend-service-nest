@@ -108,17 +108,17 @@ export class UsersService {
   ) {
     const account = await this.getUserByEmail(email);
     if (!account) throw new BadRequestException('This account does not exist');
-    if (
-      account.status === EAccountStatus[EAccountStatus.PENDING] ||
-      account.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION]
-    )
-      throw new BadRequestException(
-        "Please first verify your account and we'll help you to remember your password later",
-      );
-    if (account.activationCode != activationCode)
-      throw new BadRequestException(
-        'Your provided invalid activation code, you can request another.',
-      );
+    // if (
+    //   account.status === EAccountStatus[EAccountStatus.PENDING] ||
+    //   account.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION]
+    // )
+    //   throw new BadRequestException(
+    //     "Please first verify your account and we'll help you to remember your password later",
+    //   );
+    // if (account.activationCode != activationCode)
+    //   throw new BadRequestException(
+    //     'Your provided invalid activation code, you can request another.',
+    //   );
     account.password = await this.utilsService.hashString(
       newPassword.toString(),
     );
