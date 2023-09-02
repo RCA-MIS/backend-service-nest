@@ -13,6 +13,9 @@ export class News {
   @Column()
   description: string;
 
+  @Column()
+  image : string;
+
   @ManyToOne(() => User)
   writer: User;
 

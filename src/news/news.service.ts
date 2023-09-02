@@ -6,12 +6,14 @@ import { News } from 'src/entities/news.entity';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common/exceptions';
+import { FilesService } from 'src/files/files.service';
 
 @Injectable()
 export class NewsService {
   constructor(
     @InjectRepository(News) private newsRepo: Repository<News>,
     private userService: UsersService,
+    private fileService: FilesService,
   ) {}
 
   async getAllNews() {
@@ -26,7 +28,7 @@ export class NewsService {
     });
   }
 
-  async createNews(project: CreateNewsDto) {
+  async createNews(project: CreateNewsDto , file: Express.Multer.File) {
     const { title, description, userEmail } = project;
     const writer = await this.userService.getUserByEmail(userEmail);
     if (!writer)
@@ -34,11 +36,13 @@ export class NewsService {
     const createdAt = new Date(Date.now());
     const updatedAt = null;
     const likes = 0;
+    const image = await this.fileService.uploadFile(file);
     const newsEntity = this.newsRepo.create({
       title,
       description,
       writer,
       likes,
+      image,
       createdAt,
       updatedAt,
     });
@@ -64,6 +68,24 @@ export class NewsService {
     }
     return new NotFoundException('News not found');
   }
+
+  async updateNewsImage(id: number, file: Express.Multer.File) {
+    const news = await this.newsRepo.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (news) {
+      const image = await this.fileService.updateFile(news.image, file);
+      news.image = image;
+      await this.newsRepo.save(news);
+      return {
+        message: 'News image updated successfully',
+      };
+    }
+    return new NotFoundException('News not found');
+  }
+  
 
   async deleteNews(id: number) {
     const news = await this.newsRepo.findOne({
