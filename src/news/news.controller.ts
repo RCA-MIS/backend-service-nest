@@ -46,6 +46,7 @@ export class NewsController {
   }
 
   @Patch('/update/image/:id')
+  @UseInterceptors(FileInterceptor('image'))
   updateProjectImage(@Param('id') id : string , @UploadedFile() file: Express.Multer.File) {
     return this.newService.updateNewsImage(parseInt(id) , file);
   }
