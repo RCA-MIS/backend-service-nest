@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn , ManyToOne } from "typeorm";
 import { News } from "./news.entity";
 import { Project } from "./project.entity";
 import { User } from "./user.entity";
@@ -14,13 +14,15 @@ export class Comments {
     @Column()
     likes: number;
 
-    @Column()
+    @ManyToOne(() => User)
     writer: User;
 
     @Column({nullable : true})
+    @ManyToOne(() => News)
     news : News;
 
     @Column({nullable : true})
+    @ManyToOne(() => Project)
     project : Project
 
     @Column()

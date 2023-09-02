@@ -7,7 +7,7 @@ export class CreateCommentDto {
 
     @IsOptional()
     @IsString()
-    user_id: string;
+    user_email: string;
 
     @IsOptional()
     @IsString()
