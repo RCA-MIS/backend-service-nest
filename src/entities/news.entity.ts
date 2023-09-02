@@ -13,7 +13,7 @@ export class News {
   @Column()
   description: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() =>   User)
   writer: User;
 
   @Column()
