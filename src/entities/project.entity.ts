@@ -17,6 +17,9 @@ export class Project {
     @Column({ type: "varchar", length: 255 })
      status: string;
 
+     @Column({ type: "varchar", length: 255 })
+        image: string;
+
     @Column({ type: "varchar", length: 255 })
     @ManyToOne(()=> User)
      user: User;

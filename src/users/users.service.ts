@@ -150,6 +150,8 @@ export class UsersService {
         email: email2,
       },
     });
+    console.log(userFetched);
+    
     if (userFetched) return new UnauthorizedException('Email already exists');
 
     const status: String =

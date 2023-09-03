@@ -7,7 +7,10 @@ import {
   Param,
   Post,
   Delete,
+  UseInterceptors,
+  UploadedFile
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { NewsService } from './news.service';
 import { NotFoundException } from '@nestjs/common';
 import { CreateNewsDto } from 'src/dtos/create-news.dto';
@@ -32,13 +35,20 @@ export class NewsController {
   }
 
   @Post('/create')
-  createProject(@Body() news: CreateNewsDto) {
-    return this.newService.createNews(news);
+  @UseInterceptors(FileInterceptor('image'))
+  createProject(@Body() news: CreateNewsDto , @UploadedFile() file: Express.Multer.File) {
+    return this.newService.createNews(news , file);
   }
 
   @Patch('/update/:id')
   updateProject(@Param('id') id: string, @Body() news: UpdateNewsDto) {
     return this.newService.updateNews(parseInt(id), news);
+  }
+
+  @Patch('/update/image/:id')
+  @UseInterceptors(FileInterceptor('image'))
+  updateProjectImage(@Param('id') id : string , @UploadedFile() file: Express.Multer.File) {
+    return this.newService.updateNewsImage(parseInt(id) , file);
   }
 
   @Patch('/like/:id')

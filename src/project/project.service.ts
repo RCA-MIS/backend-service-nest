@@ -6,11 +6,13 @@ import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { CreateProjectDto } from 'src/dtos/create-project.dto';
 import { UsersService } from 'src/users/users.service';
+import { FilesService } from 'src/files/files.service';
 
 @Injectable()
 export class ProjectService {
     constructor(
        @InjectRepository(Project) private projectRepo : Repository<Project>,
+       private fileService : FilesService,
        private userService : UsersService
     ){}
 
@@ -26,18 +28,20 @@ export class ProjectService {
         });
     }
 
-    async createProject(project : CreateProjectDto){
+    async createProject(project : CreateProjectDto , file : Express.Multer.File){
         const {name, description, status , userEmail} = project;
         const user = await this.userService.getUserByEmail(userEmail);
         if(!user) return new NotFoundException(`User with email: ${userEmail} not found`);
         const createdAt = new Date(Date.now())
         const updatedAt = null;
         const comments = null;
+        const image = await this.fileService.uploadFile(file);
         const projectEntity = this.projectRepo.create({
             name,
             description,
             status,
             user,
+            image,
             createdAt,
             updatedAt,
             comments,
@@ -48,6 +52,24 @@ export class ProjectService {
                 data : projectEntity
          } 
     }
+
+    async updateProjectImage(id : number , file : Express.Multer.File){
+        const project = await this.projectRepo.findOne({
+            where : {
+                id : id
+            }
+        });
+        if(project){
+            const image = await this.fileService.uploadFile(file);
+            project.image = image;
+            await this.projectRepo.save(project);
+            return {
+                message : "Project image updated successfully"
+            }
+        }
+        return new NotFoundException("Project not found");
+    }
+    
 
     async updateProject(id : number , attrs : Partial<Project>){
         const project = await this.projectRepo.findOne({

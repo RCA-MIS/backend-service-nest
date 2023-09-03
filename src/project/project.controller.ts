@@ -2,12 +2,15 @@
 import {
   Controller,
   Get,
-  Post,
   Patch,
-  Delete,
-  Param,
   Body,
+  Param,
+  Post,
+  Delete,
+  UseInterceptors,
+  UploadedFile
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ProjectService } from './project.service';
 import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
 import { CreateProjectDto } from 'src/dtos/create-project.dto';
@@ -32,9 +35,17 @@ export class ProjectController {
   }
 
   @Post('/create')
-  createProject(@Body() project: CreateProjectDto) {
-    return this.projectService.createProject(project);
+  @UseInterceptors(FileInterceptor('image'))
+  createProject(@Body() project: CreateProjectDto , @UploadedFile() file: Express.Multer.File) {
+    return this.projectService.createProject(project , file);
   }
+
+  @Patch('/update/image/:id')
+  @UseInterceptors(FileInterceptor('image'))
+  updateProjectImage(@Param('id') id : string , @UploadedFile() file: Express.Multer.File) {
+    return this.projectService.updateProjectImage(parseInt(id) , file);
+  }
+
 
   @Patch('/update/:id')
   updateProject(@Param('id') id: string, @Body() project: UpdateProjectDto) {

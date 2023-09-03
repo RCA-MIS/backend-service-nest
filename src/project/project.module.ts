@@ -5,10 +5,12 @@ import { ProjectService } from './project.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Project } from '../entities/project.entity';
 import { UsersModule } from 'src/users/users.module';
+import { FilesModule } from 'src/files/files.module';
 
 @Module({
   controllers: [ProjectController],
-  imports : [TypeOrmModule.forFeature([Project]) , UsersModule],
-  providers: [ProjectService]
+  imports : [TypeOrmModule.forFeature([Project]) , UsersModule , FilesModule],
+  providers: [ProjectService],
+  exports : [ProjectService]
 })
 export class ProjectsModule {}
