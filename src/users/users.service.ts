@@ -76,13 +76,13 @@ export class UsersService {
 
   async login(dto: LoginDTO) {
     const user = await this.getUserByEmail(dto.email);
-    if (
-      user.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION] ||
-      user.status == EAccountStatus[EAccountStatus.PENDING]
-    )
-      throw new BadRequestException(
-        'This account is not yet verified, please check your gmail inbox for verification details',
-      );
+    // if (
+    //   user.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION] ||
+    //   user.status == EAccountStatus[EAccountStatus.PENDING]
+    // )
+    //   throw new BadRequestException(
+    //     'This account is not yet verified, please check your gmail inbox for verification details',
+    //   );
     const tokens = this.utilsService.getTokens(user);
     return tokens;
   }
@@ -108,17 +108,17 @@ export class UsersService {
   ) {
     const account = await this.getUserByEmail(email);
     if (!account) throw new BadRequestException('This account does not exist');
-    if (
-      account.status === EAccountStatus[EAccountStatus.PENDING] ||
-      account.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION]
-    )
-      throw new BadRequestException(
-        "Please first verify your account and we'll help you to remember your password later",
-      );
-    if (account.activationCode != activationCode)
-      throw new BadRequestException(
-        'Your provided invalid activation code, you can request another.',
-      );
+    // if (
+    //   account.status === EAccountStatus[EAccountStatus.PENDING] ||
+    //   account.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION]
+    // )
+    //   throw new BadRequestException(
+    //     "Please first verify your account and we'll help you to remember your password later",
+    //   );
+    // if (account.activationCode != activationCode)
+    //   throw new BadRequestException(
+    //     'Your provided invalid activation code, you can request another.',
+    //   );
     account.password = await this.utilsService.hashString(
       newPassword.toString(),
     );
