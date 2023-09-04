@@ -37,6 +37,7 @@ import { TermModule } from './term/term.module';
 import { FilesModule } from './files/files.module';
 import { CommentsModule } from './comments/comments.module';
 import { ReportCardModule } from './report-card/report-card.module';
+import { AcademicYearModule } from './academic-year/academic-year.module';
 
 @Module({
   imports: [
@@ -92,6 +93,7 @@ import { ReportCardModule } from './report-card/report-card.module';
     FilesModule,
     CommentsModule,
     ReportCardModule,
+    AcademicYearModule,
   ],
   controllers: [AuthController, HomeController],
 })
