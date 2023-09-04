@@ -25,6 +25,6 @@ export class News {
   @Column()
   createdAt: Date;
 
-  @Column()
+  @Column({nullable: true})
   updatedAt: Date;
 }

@@ -19,7 +19,7 @@ export class UtilsService {
     const accessToken: String = await this.jwt.signAsync(
       { roles: user.roles, id: user.id, national_id: user.national_id },
       {
-        expiresIn: '10m',
+        expiresIn: '3h',
         secret: this.config.get('SECRET_KEY'),
       },
     );
