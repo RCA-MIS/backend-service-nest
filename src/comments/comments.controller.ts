@@ -1,7 +1,8 @@
 import { Controller , Get , Patch , Delete , Post} from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from 'src/dtos/create-comment.dto';
+import { UpdateCommentDto } from 'src/dtos/update-comment.dto';
 
 @Controller('comments')
 @ApiTags('comments')
@@ -26,12 +27,14 @@ export class CommentsController {
     }
 
     @Post('/create')
+    @ApiBody({type : CreateCommentDto})
     createComment(comment : CreateCommentDto){
         return this.commentService.createComment(comment);
     }
 
     @Patch('/update/:id')
-    updateComment(id : string , comment : CreateCommentDto){
+    @ApiBody({type : UpdateCommentDto})
+    updateComment(id : string , comment : UpdateCommentDto){
         return this.commentService.updateComment(parseInt(id) , comment);
     }
 

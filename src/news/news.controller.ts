@@ -15,7 +15,7 @@ import { NewsService } from './news.service';
 import { NotFoundException } from '@nestjs/common';
 import { CreateNewsDto } from 'src/dtos/create-news.dto';
 import { UpdateNewsDto } from 'src/dtos/update-news.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('news')
 @Controller('news')
@@ -35,12 +35,14 @@ export class NewsController {
   }
 
   @Post('/create')
+  @ApiBody({ type: CreateNewsDto })
   @UseInterceptors(FileInterceptor('image'))
   createProject(@Body() news: CreateNewsDto , @UploadedFile() file: Express.Multer.File) {
     return this.newService.createNews(news , file);
   }
 
   @Patch('/update/:id')
+  @ApiBody({ type: UpdateNewsDto })
   updateProject(@Param('id') id: string, @Body() news: UpdateNewsDto) {
     return this.newService.updateNews(parseInt(id), news);
   }
