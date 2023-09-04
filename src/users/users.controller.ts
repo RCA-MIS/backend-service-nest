@@ -13,7 +13,7 @@ import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/utils/decorators/roles.decorator';
 
 @ApiTags('users')
@@ -38,11 +38,13 @@ export class UsersController {
 
   @Post('/create')
   // @Roles('ADMIN', 'TEACHER')
+  @ApiBody({ type: CreateUserDto })
   createAdminAccount(@Body() body: CreateUserDto) {
     return this.usersService.createUser(body);
   }
 
   @Patch('update/:id')
+  @ApiBody({ type: UpdateUserDto })
   updateUser(@Param('id') id: number, @Body() body: UpdateUserDto) {
     return this.usersService.updateUser(id, body);
   }

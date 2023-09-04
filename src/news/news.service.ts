@@ -28,30 +28,40 @@ export class NewsService {
     });
   }
 
-  async createNews(project: CreateNewsDto , file: Express.Multer.File) {
-    const { title, description, userEmail } = project;
+  async createNews(news: CreateNewsDto , file: Express.Multer.File) {
+    const { title, description, userEmail } = news;
     const writer = await this.userService.getUserByEmail(userEmail);
-    if (!writer)
-      return new NotFoundException(`User with email: ${userEmail} not found`);
+    if (!writer) return new NotFoundException(`User with email: ${userEmail} not found`);
     const createdAt = new Date(Date.now());
     const updatedAt = null;
-    const likes = 0;
-    const image = await this.fileService.uploadFile(file);
-    const newsEntity = this.newsRepo.create({
-      title,
-      description,
-      writer,
-      likes,
-      image,
-      createdAt,
-      updatedAt,
-    });
-    await this.newsRepo.save(project);
-    return {
-      message: 'News created successfully',
-      data: newsEntity,
-    };
+    let likes = 0;
+    try{
+      const image = await this.fileService.uploadFile(file);
+      if(!image) return new NotFoundException('Image not found ');
+      console.log(image);
+      const newsEntity = this.newsRepo.create({
+        title,
+        description,
+        image,
+        likes,
+        writer,
+        createdAt,
+        updatedAt,
+      });
+      await this.newsRepo.save(newsEntity);
+      return {
+        message: 'News created successfully',
+        data: newsEntity,
+      };
+    }catch(error){
+      console.log(error);
+      return {
+        message: 'News creation Failed!',
+      }
+    }
   }
+
+
   async updateNews(id: number, attrs: Partial<News>) {
     const news = await this.newsRepo.findOne({
       where: {
