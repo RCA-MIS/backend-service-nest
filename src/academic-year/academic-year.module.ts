@@ -8,5 +8,6 @@ import { AcademicYear } from '../entities/academic_year.entity';
   controllers: [AcademicYearController],
   providers: [AcademicYearService],
   imports: [TypeOrmModule.forFeature([AcademicYear])],
+  exports : [AcademicYearService]
 })
 export class AcademicYearModule {}

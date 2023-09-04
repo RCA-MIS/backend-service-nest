@@ -39,6 +39,7 @@ import { CommentsModule } from './comments/comments.module';
 import { ReportCardModule } from './report-card/report-card.module';
 import { AcademicYearModule } from './academic-year/academic-year.module';
 import { AcademicYear } from './entities/academic_year.entity';
+import { Term } from './entities/term.entity';
 
 @Module({
   imports: [
@@ -65,7 +66,8 @@ import { AcademicYear } from './entities/academic_year.entity';
           Report,
           Project,
           News,
-          AcademicYear
+          AcademicYear,
+          Term
         ],
         synchronize: true,
       }),
