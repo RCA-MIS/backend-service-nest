@@ -38,6 +38,7 @@ import { FilesModule } from './files/files.module';
 import { CommentsModule } from './comments/comments.module';
 import { ReportCardModule } from './report-card/report-card.module';
 import { AcademicYearModule } from './academic-year/academic-year.module';
+import { AcademicYear } from './entities/academic_year.entity';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { AcademicYearModule } from './academic-year/academic-year.module';
           Report,
           Project,
           News,
+          AcademicYear
         ],
         synchronize: true,
       }),
