@@ -36,6 +36,7 @@ import { MarksModule } from './marks/marks.module';
 import { TermModule } from './term/term.module';
 import { FilesModule } from './files/files.module';
 import { CommentsModule } from './comments/comments.module';
+import { ReportCardModule } from './report-card/report-card.module';
 
 @Module({
   imports: [
@@ -90,6 +91,7 @@ import { CommentsModule } from './comments/comments.module';
     TermModule,
     FilesModule,
     CommentsModule,
+    ReportCardModule,
   ],
   controllers: [AuthController, HomeController],
 })
