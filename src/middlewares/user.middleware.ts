@@ -7,10 +7,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { log } from 'console';
 import { NextFunction, Request } from 'express';
-import { User } from 'src/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()

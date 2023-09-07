@@ -2,9 +2,6 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { google } from 'googleapis';
 import { ConfigService } from '@nestjs/config';
-import { resolve } from 'path';
-import { rejects } from 'assert';
-import { error } from 'console';
 import { Options } from 'nodemailer/lib/smtp-transport';
 
 @Injectable()
@@ -56,7 +53,7 @@ export class MailingService {
         transporterName: 'gmail',
         to: receiver.toString(),
         from: this.configService.get('EMAIL'),
-        subject: 'verification code',
+        subject: 'Rwanda Coding Academy user account verification',
         template: 'action',
         context: {
           code: '38320',
