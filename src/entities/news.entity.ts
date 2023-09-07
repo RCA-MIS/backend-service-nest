@@ -13,7 +13,10 @@ export class News {
   @Column()
   description: string;
 
-  @ManyToOne(() =>   User)
+  @Column()
+  image : string;
+
+  @ManyToOne(() => User)
   writer: User;
 
   @Column()
@@ -22,6 +25,6 @@ export class News {
   @Column()
   createdAt: Date;
 
-  @Column()
+  @Column({nullable: true})
   updatedAt: Date;
 }
