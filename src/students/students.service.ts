@@ -81,6 +81,16 @@ export class StudentsService {
   async getAllStudents() {
     return await this.studentRepo.find();
   }
+
+  findOne(id: number) {
+    return this.studentRepo.findOne({
+      where: {
+        id: id,
+      },
+    });
+  }
+
+  
   getStudent(id: number) {
     return this.userService.getUserById(id, 'Student');
   }

@@ -9,5 +9,6 @@ import { AcademicYearModule } from 'src/academic-year/academic-year.module';
   controllers: [TermController],
   providers: [TermService],
   imports : [TypeOrmModule.forFeature([Term]) , AcademicYearModule],
+  exports : [TermService]
 })
 export class TermModule {}

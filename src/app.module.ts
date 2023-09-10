@@ -40,6 +40,7 @@ import { ReportCardModule } from './report-card/report-card.module';
 import { AcademicYearModule } from './academic-year/academic-year.module';
 import { AcademicYear } from './entities/academic_year.entity';
 import { Term } from './entities/term.entity';
+import { ReportCard } from './entities/report_card.entity';
 
 @Module({
   imports: [
@@ -67,7 +68,8 @@ import { Term } from './entities/term.entity';
           Project,
           News,
           AcademicYear,
-          Term
+          Term,
+          ReportCard
         ],
         synchronize: true,
       }),
