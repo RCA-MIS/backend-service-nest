@@ -55,6 +55,16 @@ export class UsersService {
     return user;
   }
 
+  async getOneByEmail(email: any) {
+    const user = await this.userRepo.findOne({
+      where: {
+        email: email,
+      },
+      relations: ['roles'],
+    });
+    return user;
+  }
+
   async getUserById(id: number, entity: String) {
     const response = await this.userRepo.findOne({
       where: {
@@ -75,7 +85,7 @@ export class UsersService {
   }
 
   async login(dto: LoginDTO) {
-    const user = await this.getUserByEmail(dto.email);
+    const user = await this.getOneByEmail(dto.email);
     if (
       user.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION] ||
       user.status == EAccountStatus[EAccountStatus.PENDING]
@@ -151,7 +161,7 @@ export class UsersService {
       },
     });
     console.log(userFetched);
-    
+
     if (userFetched) return new UnauthorizedException('Email already exists');
 
     const status: String =
