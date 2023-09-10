@@ -36,6 +36,11 @@ import { MarksModule } from './marks/marks.module';
 import { TermModule } from './term/term.module';
 import { FilesModule } from './files/files.module';
 import { CommentsModule } from './comments/comments.module';
+import { ReportCardModule } from './report-card/report-card.module';
+import { AcademicYearModule } from './academic-year/academic-year.module';
+import { AcademicYear } from './entities/academic_year.entity';
+import { Term } from './entities/term.entity';
+import { ReportCard } from './entities/report_card.entity';
 
 @Module({
   imports: [
@@ -62,6 +67,9 @@ import { CommentsModule } from './comments/comments.module';
           Report,
           Project,
           News,
+          AcademicYear,
+          Term,
+          ReportCard
         ],
         synchronize: true,
       }),
@@ -90,6 +98,8 @@ import { CommentsModule } from './comments/comments.module';
     TermModule,
     FilesModule,
     CommentsModule,
+    ReportCardModule,
+    AcademicYearModule,
   ],
   controllers: [AuthController, HomeController],
 })
