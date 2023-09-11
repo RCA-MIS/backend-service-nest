@@ -82,8 +82,8 @@ export class StudentsService {
     return await this.studentRepo.find();
   }
 
-  findOne(id: number) {
-    return this.studentRepo.findOne({
+  async findOne(id: number) {
+    return await this.studentRepo.findOne({
       where: {
         id: id,
       },

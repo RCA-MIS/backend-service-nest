@@ -7,6 +7,7 @@ import { UpdateReportCardDto } from 'src/dtos/update-report_card.dto';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { UseInterceptors } from '@nestjs/common/decorators';
 import { ApiTags } from '@nestjs/swagger';
+import { log } from 'console';
 
 @Controller('report-card')
 @ApiTags('report-card')
@@ -20,6 +21,11 @@ export class ReportCardController {
         return await this.reportCardService.findAll();
     }
 
+    @Get('/all/release')
+    async findAllReleased(){
+        return await this.reportCardService.findAllReleased();
+    }
+
     @Get('/:id')
     async findOne(@Param('id') id : string){
         const reportCard = await this.reportCardService.findOne(parseInt(id));
@@ -27,10 +33,6 @@ export class ReportCardController {
         return reportCard;
     }
 
-    @Get('/released')
-    async findAllReleased(){
-        return await this.reportCardService.findAllReleased();
-    }
 
     @Get('/student/:id')
     async findAllByStudentId(@Param('id') studentId : string){
@@ -48,14 +50,14 @@ export class ReportCardController {
         return await this.reportCardService.create(reportCard , file);
     }
 
-    @Post('/release/:id')
-    async releaseReport(@Param('id') reportId : string){
-        return await this.reportCardService.release(parseInt(reportId));
-    }
-
     @Post('/release/all')
     async releaseAllReports(){
         return await this.reportCardService.releaseAll()
+    }
+
+    @Post('/release/:id')
+    async releaseReport(@Param('id') reportId : string){
+        return await this.reportCardService.release(parseInt(reportId));
     }
 
     @Patch('/update/:id')
