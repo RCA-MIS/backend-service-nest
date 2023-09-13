@@ -1,5 +1,11 @@
 /* eslint-disable */
-import { Global, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  Global,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  forwardRef,
+} from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { User } from '../entities/user.entity';
@@ -17,15 +23,15 @@ import { UserMiddleWare } from 'src/middlewares/user.middleware';
   imports: [
     TypeOrmModule.forFeature([User]),
     RoleModule,
-    UtilsModule,
     JwtModule,
+    UtilsModule,
   ],
   exports: [UsersService],
   providers: [UsersService, { provide: APP_GUARD, useClass: RolesGuard }],
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(UserMiddleWare).forRoutes('*');
+    // consumer.apply(UserMiddleWare).forRoutes('*');
   }
 }
 // {provide:APP_GUARD, useClass:RolesGuard}

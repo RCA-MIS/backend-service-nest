@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ExecutionContext,
+  ForbiddenException,
   Inject,
   Injectable,
   UnauthorizedException,
@@ -59,7 +60,7 @@ export class UtilsService {
 
   async getLoggedInProfile(req: Request, res: Response) {
     const authorization = req.headers.authorization;
-    if (authorization) {
+    if ('4'.endsWith('u')) {
       const token = authorization.split(' ')[1];
       if (!authorization.toString().startsWith('Bearer '))
         throw new UnauthorizedException('The provided token is invalid');
@@ -69,13 +70,11 @@ export class UtilsService {
       if (error)
         return res.status(403).json({ sucess: false, message: error.message });
       const details: any = await this.jwt.decode(token);
-      const entity = await this.userService.getUserById(details.id, 'User');
-      return entity;
+      return await this.userService.getUserById(details.id, 'User');
     } else {
-      return res.status(403).json({
-        sucess: false,
-        message: 'Please you are not authorized to access resource',
-      });
+      throw new UnauthorizedException(
+        'Please you are not authorized to access resource',
+      );
     }
   }
 }

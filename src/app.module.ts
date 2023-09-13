@@ -41,6 +41,7 @@ import { AcademicYearModule } from './academic-year/academic-year.module';
 import { AcademicYear } from './entities/academic_year.entity';
 import { Term } from './entities/term.entity';
 import { ReportCard } from './entities/report_card.entity';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -69,7 +70,7 @@ import { ReportCard } from './entities/report_card.entity';
           News,
           AcademicYear,
           Term,
-          ReportCard
+          ReportCard,
         ],
         synchronize: true,
       }),
@@ -97,6 +98,7 @@ import { ReportCard } from './entities/report_card.entity';
     MarksModule,
     TermModule,
     FilesModule,
+    UtilsModule,
     CommentsModule,
     ReportCardModule,
     AcademicYearModule,

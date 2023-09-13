@@ -18,8 +18,6 @@ export class UserMiddleWare implements NestMiddleware {
     @Inject(UsersService) private readonly userService: UsersService,
   ) {}
   async use(req: Request, res: Response, next: NextFunction) {
-    let context: ExecutionContext;
-    const request = req;
     const authorization = req.headers.authorization;
     if (
       req.baseUrl == '' ||
@@ -27,7 +25,9 @@ export class UserMiddleWare implements NestMiddleware {
       req.baseUrl == '/auth/login' ||
       req.baseUrl == '/api/swagger-docs.html' ||
       req.baseUrl == '/users/create' ||
-      req.baseUrl == '/auth/verify_account'
+      req.baseUrl == '/auth/verify_account' ||
+      req.baseUrl == '/auth/reset_password' ||
+      req.baseUrl == '/news/all'
     ) {
       next();
     } else {
@@ -44,7 +44,6 @@ export class UserMiddleWare implements NestMiddleware {
         req['user'] = user;
         next();
       } else {
-        console.log(req.baseUrl);
         throw new UnauthorizedException(
           'Please you are not authorized to access resource',
         );
