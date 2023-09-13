@@ -26,7 +26,8 @@ export class UserMiddleWare implements NestMiddleware {
       req.baseUrl == '/favicon.ico' ||
       req.baseUrl == '/auth/login' ||
       req.baseUrl == '/api/swagger-docs.html' ||
-      req.baseUrl == '/users/create'
+      req.baseUrl == '/users/create' ||
+      req.baseUrl == '/auth/verify_account'
     ) {
       next();
     } else {

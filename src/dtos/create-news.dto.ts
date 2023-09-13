@@ -1,22 +1,26 @@
 /* eslint-disable */
-import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateNewsDto{
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    title : string;
+export class CreateNewsDto {
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  title: string;
 
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    description : string;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  shortDescription: string;
 
-    @IsNotEmpty()
-    @IsString()
-    @IsEmail()
-    @ApiProperty()
-    userEmail : string;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  longDescription: string;
 
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  @ApiProperty()
+  userEmail: string;
 }

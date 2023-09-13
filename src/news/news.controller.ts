@@ -8,7 +8,7 @@ import {
   Post,
   Delete,
   UseInterceptors,
-  UploadedFile
+  UploadedFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { NewsService } from './news.service';
@@ -37,8 +37,11 @@ export class NewsController {
   @Post('/create')
   @ApiBody({ type: CreateNewsDto })
   @UseInterceptors(FileInterceptor('image'))
-  createProject(@Body() news: CreateNewsDto , @UploadedFile() file: Express.Multer.File) {
-    return this.newService.createNews(news , file);
+  createProject(
+    @Body() news: CreateNewsDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.newService.createNews(news, file);
   }
 
   @Patch('/update/:id')
@@ -49,8 +52,11 @@ export class NewsController {
 
   @Patch('/update/image/:id')
   @UseInterceptors(FileInterceptor('image'))
-  updateProjectImage(@Param('id') id : string , @UploadedFile() file: Express.Multer.File) {
-    return this.newService.updateNewsImage(parseInt(id) , file);
+  updateProjectImage(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.newService.updateNewsImage(parseInt(id), file);
   }
 
   @Patch('/like/:id')
