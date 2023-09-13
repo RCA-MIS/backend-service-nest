@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm/dist';
@@ -16,13 +16,15 @@ import { MailingService } from 'src/mailing/mailing.service';
 import { UtilsService } from 'src/utils/utils.service';
 import { LoginDTO } from 'src/dtos/lodin.dto';
 import { ERole } from 'src/Enum/ERole.enum';
+import { Request, Response } from 'express';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) public userRepo: Repository<User>,
+    // @Inject(forwardRef(() => RoleService))
     private roleService: RoleService,
-    private mailingService: MailingService,
+    @Inject(forwardRef(() => UtilsService))
     private utilsService: UtilsService,
   ) {}
 
@@ -195,13 +197,14 @@ export class UsersService {
     try {
       const userEntity = this.userRepo.create(userToCreate);
       const createdEnity = this.userRepo.save({ ...userEntity, roles: [role] });
-      await this.mailingService.sendVerificationEmail(
-        userEntity.email.toString(),
-      );
+      // await this.mailingService.sendVerificationEmail(
+      //   userEntity.email.toString(),
+      // );
       return {
         success: true,
-        message:
-          'we have sent an verification code to your inbox , please head their and verify your account',
+        message: `we have sent an verification code to your inbox , please head their and verify your account if you can't see it , your verification code is ${
+          (await createdEnity).activationCode
+        }`,
       };
     } catch (error) {
       console.log(error);
@@ -222,5 +225,13 @@ export class UsersService {
     }
     this.userRepo.remove(user);
     return user;
+  }
+
+  async getProfile(req: Request, res: Response) {
+    try {
+      return await this.utilsService.getLoggedInProfile(req, res);
+    } catch (error) {
+      return error;
+    }
   }
 }

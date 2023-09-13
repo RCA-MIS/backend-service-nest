@@ -1,5 +1,12 @@
 /* eslint-disable */
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { LoginDTO } from 'src/dtos/lodin.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
@@ -8,12 +15,17 @@ import { VerifyAccountDTO } from 'src/dtos/verify-account.dto';
 import { User } from 'src/entities/user.entity';
 import { ResetPasswordDTO } from 'src/dtos/reset-password.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
+import { Request, Response } from 'express';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   public isUserAvailable: User;
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Post('/login')
   async login(@Body() dto: LoginDTO): Promise<ApiResponse> {
@@ -55,5 +67,10 @@ export class AuthController {
         dto.newPassword,
       ),
     );
+  }
+  @Get('/get-profile')
+  async getProfile(@Req() req: Request, @Req() res: Response) {
+    let profile = await this.authService.getProfile(req, res);
+    return profile;
   }
 }
