@@ -1,28 +1,30 @@
 /* eslint-disable */
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm/dist';
 import {
   BadRequestException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common/exceptions';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import { RoleService } from 'src/roles/role.service';
 import { EAccountStatus } from 'src/Enum/EAccountStatus.enum';
 import { EGender } from 'src/Enum/EGender.enum';
 import { MailingService } from 'src/mailing/mailing.service';
+import { ERole } from 'src/Enum/ERole.enum';
+import { Request, Response } from 'express';
+import { User } from 'src/entities/user.entity';
+import { RoleService } from 'src/roles/role.service';
 import { UtilsService } from 'src/utils/utils.service';
 import { LoginDTO } from 'src/dtos/lodin.dto';
-import { ERole } from 'src/Enum/ERole.enum';
+import { CreateUserDto } from 'src/dtos/create-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) public userRepo: Repository<User>,
+    // @Inject(forwardRef(() => RoleService))
     private roleService: RoleService,
-    private mailingService: MailingService,
+    @Inject(forwardRef(() => UtilsService))
     private utilsService: UtilsService,
   ) {}
 
@@ -55,6 +57,16 @@ export class UsersService {
     return user;
   }
 
+  async getOneByEmail(email: any) {
+    const user = await this.userRepo.findOne({
+      where: {
+        email: email,
+      },
+      relations: ['roles'],
+    });
+    return user;
+  }
+
   async getUserById(id: number, entity: String) {
     const response = await this.userRepo.findOne({
       where: {
@@ -75,7 +87,7 @@ export class UsersService {
   }
 
   async login(dto: LoginDTO) {
-    const user = await this.getUserByEmail(dto.email);
+    const user = await this.getOneByEmail(dto.email);
     if (
       user.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION] ||
       user.status == EAccountStatus[EAccountStatus.PENDING]
@@ -151,7 +163,7 @@ export class UsersService {
       },
     });
     console.log(userFetched);
-    
+
     if (userFetched) return new UnauthorizedException('Email already exists');
 
     const status: String =
@@ -185,13 +197,14 @@ export class UsersService {
     try {
       const userEntity = this.userRepo.create(userToCreate);
       const createdEnity = this.userRepo.save({ ...userEntity, roles: [role] });
-      await this.mailingService.sendVerificationEmail(
-        userEntity.email.toString(),
-      );
+      // await this.mailingService.sendVerificationEmail(
+      //   userEntity.email.toString(),
+      // );
       return {
         success: true,
-        message:
-          'we have sent an verification code to your inbox , please head their and verify your account',
+        message: `we have sent an verification code to your inbox , please head their and verify your account if you can't see it , your verification code is ${
+          (await createdEnity).activationCode
+        }`,
       };
     } catch (error) {
       console.log(error);

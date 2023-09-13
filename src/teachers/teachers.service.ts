@@ -48,7 +48,7 @@ export class TeachersService {
     return this.teacherRepo.save(teacher);
   }
 
-  async updateTeacher(id: number, dto: UpdateUserDto) {
+  async eTeacher(id: number, dto: UpdateUserDto) {
     const isTeachervailable: Teacher = await this.getTeacher(id);
     if (!isTeachervailable)
       throw new NotFoundException('The teacher with provided id is not found');

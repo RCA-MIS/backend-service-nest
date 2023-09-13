@@ -7,76 +7,129 @@ export class WebContent extends InitiatorAudit {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @JoinColumn({
+  @Column({
     name: 'landing_burner_image',
   })
   LandingBurnerImage: string;
 
-  @JoinColumn({
+  @Column({
     name: 'aboutus_main_image',
   })
   aboutUsMainImage: string;
 
-  @JoinColumn({
+  @Column({
     name: 'innovations_main_image',
   })
   InnovationsMainImage: string;
 
-  @JoinColumn({
+  @Column({
     name: 'newsletter_card_image',
   })
   newsLetterCardImage: string;
 
-  @JoinColumn({
+  @Column({
     name: 'newsletter_large_image',
   })
   newsLetterLargeImage: string;
 
-  @Column()
+  @Column({
+    name: 'about_us_text',
+  })
   aboutUsText: string;
 
-  @Column()
+  @Column({
+    name: 'innovation_text',
+  })
   innovationText: string;
 
   @Column({
     nullable: true,
+    name: 'years_of_foundation',
   })
   yearsOfFoundation: number;
 
-  @Column()
+  @Column({
+    name: 'students_number',
+  })
   studentsNumber: number;
 
   @Column()
   startupsNumber: number;
 
-  @Column()
+  @Column({
+    name: 'school_name',
+  })
   schoolEmail: string;
 
-  @Column()
+  @Column({
+    name: 'slack_workspace_link',
+  })
   slackWorkspaceLink: string;
 
-  @Column()
-  DiscordServerLink: string;
-
-  @Column()
+  @Column({
+    name: 'facebook_link',
+  })
   FacebookLink: string;
 
-  @Column()
+  @Column({
+    name: 'instagram_link',
+  })
   InstgramLink: string;
 
-  @Column()
+  @Column({
+    name: 'school_phone_number',
+  })
   schoolPhoneNumber: string;
 
-  @Column()
+  @Column({
+    name: 'tweeter_link',
+  })
   TwitterLink: string;
 
-  @Column()
+  @Column({ name: 'linkedIn_link' })
   LinkedInLink: string;
 
-  @Column()
+  @Column({ name: 'github_link' })
   githubLink: string;
 
-  @Column()
-  snapchatLink: string;
-  
+  constructor(
+    instagramLink: string,
+    aboutUsText: string,
+    landingBurnerImage: string,
+    startUpsNumber: number,
+    schoolEmail: string,
+    slackWorspaceLink: string,
+    facebookLink: string,
+    aboutUsImage: string,
+    schoolPhoneNumber: string,
+    twitterLink: string,
+    LinkedInLink: string,
+    githubLink: string,
+    innovationMainImage: string,
+    newsLetterCardImage: string,
+    newsLetterLargeImage: string,
+    innovationImageText: string,
+    yearsOfExperience: number,
+    studentsNumber: number,
+  ) {
+    super();
+    this.LandingBurnerImage = landingBurnerImage;
+    this.startupsNumber = startUpsNumber;
+    this.schoolEmail = schoolEmail;
+    this.slackWorkspaceLink = slackWorspaceLink;
+    this.FacebookLink = facebookLink;
+    this.aboutUsMainImage = aboutUsImage;
+    this.schoolPhoneNumber = schoolPhoneNumber;
+    this.TwitterLink = twitterLink;
+    this.LinkedInLink = LinkedInLink;
+    this.githubLink = githubLink;
+    this.innovationText = innovationImageText;
+    this.InnovationsMainImage = innovationMainImage;
+    this.newsLetterLargeImage = newsLetterLargeImage;
+    this.newsLetterCardImage = newsLetterCardImage;
+    this.yearsOfFoundation = yearsOfExperience;
+    this.studentsNumber = studentsNumber;
+    this.aboutUsText = aboutUsText;
+    this.InstgramLink = instagramLink;
+  }
 }
