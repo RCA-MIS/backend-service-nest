@@ -1,22 +1,22 @@
 /* eslint-disable */
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm/dist';
 import {
   BadRequestException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common/exceptions';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import { RoleService } from 'src/roles/role.service';
 import { EAccountStatus } from 'src/Enum/EAccountStatus.enum';
 import { EGender } from 'src/Enum/EGender.enum';
 import { MailingService } from 'src/mailing/mailing.service';
-import { UtilsService } from 'src/utils/utils.service';
-import { LoginDTO } from 'src/dtos/lodin.dto';
 import { ERole } from 'src/Enum/ERole.enum';
 import { Request, Response } from 'express';
+import { User } from 'src/entities/user.entity';
+import { RoleService } from 'src/roles/role.service';
+import { UtilsService } from 'src/utils/utils.service';
+import { LoginDTO } from 'src/dtos/lodin.dto';
+import { CreateUserDto } from 'src/dtos/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -225,13 +225,5 @@ export class UsersService {
     }
     this.userRepo.remove(user);
     return user;
-  }
-
-  async getProfile(req: Request, res: Response) {
-    try {
-      return await this.utilsService.getLoggedInProfile(req, res);
-    } catch (error) {
-      return error;
-    }
   }
 }
