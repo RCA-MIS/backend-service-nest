@@ -85,7 +85,7 @@ import { UtilsModule } from './utils/utils.module';
           strict: true,
         },
       },
-    }),
+    }), 
     UsersModule,
     TeachersModule,
     StudentsModule,

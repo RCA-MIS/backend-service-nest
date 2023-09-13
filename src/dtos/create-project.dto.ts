@@ -16,7 +16,7 @@ export class CreateProjectDto{
      @IsNotEmpty()
      @IsEnum(EProjectStatus)
      @ApiProperty()
-     status: string;
+     status: EProjectStatus;
 
      @IsNotEmpty()
      @IsEmail()

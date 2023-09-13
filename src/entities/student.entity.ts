@@ -32,5 +32,5 @@ export class Student extends User {
     nullable: true,
     default: null,
   })
-  studentId: number;
+  studentId: number;  
 }

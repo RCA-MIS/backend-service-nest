@@ -9,6 +9,9 @@ import { NotFoundException } from '@nestjs/common/exceptions';
 import { CreateReportCardDto } from 'src/dtos/create-report_card.dto';
 import { FilesService } from 'src/files/files.service';
 import { UpdateReportCardDto } from 'src/dtos/update-report_card.dto';
+import { log } from 'console';
+import { Student } from 'src/entities/student.entity';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class ReportCardService {
@@ -34,7 +37,7 @@ export class ReportCardService {
     async findAllReleased() {
         return await this.reportCardRepository.find({
             where:{
-                status : EReportCardStatus.RELEASED
+                status: EReportCardStatus.RELEASED.valueOf()
             }
         });
     }
@@ -110,25 +113,34 @@ export class ReportCardService {
     }
 
     async update(id: number, reportcard : UpdateReportCardDto) {
-        const reportCard = await this.reportCardRepository.findOne({
-            where:{
-                id : id
-            }
-        });
-        if(!reportCard) return new NotFoundException("Report card not found");
-        const student = await this.studentService.getStudent(parseInt(reportcard.studentId));
-        if(!student) return new NotFoundException("Student not found");
-        const term = await this.termService.findOne(parseInt(reportcard.termId));
-        if(!term) return new NotFoundException("Term not found");
-        const updatedAt = new Date(Date.now());
-        reportCard.student.id = student.id;
-        reportCard.term = term;
-        reportCard.updatedAt = updatedAt;
-        await this.reportCardRepository.save(reportCard);
-        return {
-            message : "Report card updated successfully",
-            reportCard : reportCard
-        }
+    //     const reportCard = await this.reportCardRepository.findOne({
+    //         where:{
+    //             id : id
+    //         }
+    //     });
+    //     if(!reportCard) return new NotFoundException("Report card not found");
+    //     if(reportcard.studentId){
+    //     const student = await this.studentService.getStudent(parseInt(reportcard.studentId));
+    //     log(student);
+    //     if(!student || student == undefined || student == null) return new NotFoundException("Student not found");
+    //     reportCard.student = student;
+    //     }  
+
+    //     if(reportcard.termId){
+    //     const term = await this.termService.findOne(parseInt(reportcard.termId));
+    //     if(!term) return new NotFoundException("Term not found");
+    //     reportCard.term = term;
+    // }
+
+    //     const updatedAt = new Date(Date.now());
+       
+    //     reportCard.updatedAt = updatedAt;
+    //     await this.reportCardRepository.save(reportCard);
+    //     return {
+    //         message : "Report card updated successfully",
+    //         reportCard : reportCard
+    //     }
+    return true
     }
 
     async delete(id: number) {
@@ -164,6 +176,7 @@ export class ReportCardService {
     }
 
     async releaseAll() {
+        log("here in the release all reports");
         const reportCards = await this.reportCardRepository.find();
         if(!reportCards) return new NotFoundException("Report cards not found");
         const status = EReportCardStatus.RELEASED;

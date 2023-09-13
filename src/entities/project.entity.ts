@@ -8,28 +8,24 @@ export class Project {
     @PrimaryGeneratedColumn()
     id : number;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column()
      name: string;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column()
      description: string;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column()
      status: string;
 
-     @Column({ type: "varchar", length: 255 })
+     @Column()
         image: string;
 
-    @Column({ type: "varchar", length: 255 })
     @ManyToOne(()=> User)
      user: User;
 
-    @Column({ type: "varchar", length: 255 })
-     comments: Comment[];
-
-    @Column({ type: "varchar", length: 255 })
+    @Column()
      createdAt: Date;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column({nullable : true})
      updatedAt: Date;
 }
