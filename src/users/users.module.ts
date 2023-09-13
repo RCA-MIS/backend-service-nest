@@ -31,7 +31,7 @@ import { UserMiddleWare } from 'src/middlewares/user.middleware';
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // consumer.apply(UserMiddleWare).forRoutes('*');
+    consumer.apply(UserMiddleWare).forRoutes('*');
   }
 }
 // {provide:APP_GUARD, useClass:RolesGuard}

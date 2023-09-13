@@ -8,7 +8,6 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { ERole } from 'src/Enum/ERole.enum';
 import { Role } from 'src/entities/role.entity';
 import { User } from 'src/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
