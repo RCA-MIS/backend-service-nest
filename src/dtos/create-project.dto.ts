@@ -5,7 +5,6 @@ import { EProjectStatus } from "src/Enum/EProjectStatus.enum";
 export class CreateProjectDto{
      @IsNotEmpty()
      @IsString({message: 'Title must be a string'})
-     @Max(20)
      @ApiProperty()
      name: string;
 
@@ -17,7 +16,7 @@ export class CreateProjectDto{
      @IsNotEmpty()
      @IsEnum(EProjectStatus)
      @ApiProperty()
-     status: string;
+     status: EProjectStatus;
 
      @IsNotEmpty()
      @IsEmail()

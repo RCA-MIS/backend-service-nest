@@ -84,7 +84,7 @@ import { ReportCard } from './entities/report_card.entity';
           strict: true,
         },
       },
-    }),
+    }), 
     UsersModule,
     TeachersModule,
     StudentsModule,

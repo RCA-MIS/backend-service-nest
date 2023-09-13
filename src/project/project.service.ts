@@ -34,19 +34,18 @@ export class ProjectService {
         if(!user) return new NotFoundException(`User with email: ${userEmail} not found`);
         const createdAt = new Date(Date.now())
         const updatedAt = null;
-        const comments = null;
         const image = await this.fileService.uploadFile(file);
+        let newstatus = status.toString();
         const projectEntity = this.projectRepo.create({
             name,
             description,
-            status,
+            status : newstatus,
             user,
             image,
             createdAt,
             updatedAt,
-            comments,
         })
-         await this.projectRepo.save(project);   
+         await this.projectRepo.save(projectEntity);   
          return {
                 message : "Project created successfully",
                 data : projectEntity
@@ -95,7 +94,7 @@ export class ProjectService {
         });
 
         if(!project){
-            return new NotFoundException("Prokject not found");
+            return new NotFoundException("Project not found");
         }
 
         this.projectRepo.remove(project);

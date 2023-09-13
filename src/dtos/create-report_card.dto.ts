@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateReportCardDto {
 
-    @IsString()
+@IsString()
     @IsNotEmpty()
     @ApiProperty()
     studentId : string;

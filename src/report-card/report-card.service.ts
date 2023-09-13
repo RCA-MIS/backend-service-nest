@@ -113,33 +113,34 @@ export class ReportCardService {
     }
 
     async update(id: number, reportcard : UpdateReportCardDto) {
-        const reportCard = await this.reportCardRepository.findOne({
-            where:{
-                id : id
-            }
-        });
-        if(!reportCard) return new NotFoundException("Report card not found");
-        if(reportcard.studentId){
-        const student = await this.studentService.getStudent(parseInt(reportcard.studentId));
-        log(student);
-        if(!student || student == undefined || student == null) return new NotFoundException("Student not found");
-        reportCard.student = student;
-        }  
+    //     const reportCard = await this.reportCardRepository.findOne({
+    //         where:{
+    //             id : id
+    //         }
+    //     });
+    //     if(!reportCard) return new NotFoundException("Report card not found");
+    //     if(reportcard.studentId){
+    //     const student = await this.studentService.getStudent(parseInt(reportcard.studentId));
+    //     log(student);
+    //     if(!student || student == undefined || student == null) return new NotFoundException("Student not found");
+    //     reportCard.student = student;
+    //     }  
 
-        if(reportcard.termId){
-        const term = await this.termService.findOne(parseInt(reportcard.termId));
-        if(!term) return new NotFoundException("Term not found");
-        reportCard.term = term;
-    }
+    //     if(reportcard.termId){
+    //     const term = await this.termService.findOne(parseInt(reportcard.termId));
+    //     if(!term) return new NotFoundException("Term not found");
+    //     reportCard.term = term;
+    // }
 
-        const updatedAt = new Date(Date.now());
+    //     const updatedAt = new Date(Date.now());
        
-        reportCard.updatedAt = updatedAt;
-        await this.reportCardRepository.save(reportCard);
-        return {
-            message : "Report card updated successfully",
-            reportCard : reportCard
-        }
+    //     reportCard.updatedAt = updatedAt;
+    //     await this.reportCardRepository.save(reportCard);
+    //     return {
+    //         message : "Report card updated successfully",
+    //         reportCard : reportCard
+    //     }
+    return true
     }
 
     async delete(id: number) {
