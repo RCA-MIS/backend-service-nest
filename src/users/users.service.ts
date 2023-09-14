@@ -62,7 +62,7 @@ export class UsersService {
       where: {
         email: email,
       },
-      relations: ['roles', 'company'],
+      relations: ['roles'],
     });
     return user;
   }

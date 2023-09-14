@@ -3,6 +3,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  ForbiddenException,
   Get,
   Post,
   Req,
@@ -30,7 +31,9 @@ export class AuthController {
 
   @Post('/login')
   async login(@Body() dto: LoginDTO): Promise<ApiResponse> {
-    this.isUserAvailable = await this.userService.getUserByEmail(dto.email);
+    this.isUserAvailable = await this.userService.getOneByEmail(dto.email);
+    if (!this.isUserAvailable)
+      throw new ForbiddenException('Invalid email or password');
     const arePasswordsMatch = await bcrypt.compare(
       dto.password.toString(),
       this.isUserAvailable.password.toString(),
