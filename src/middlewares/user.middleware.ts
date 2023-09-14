@@ -46,7 +46,6 @@ export class UserMiddleWare implements NestMiddleware {
         if (!authorization.toString().startsWith('Bearer '))
           throw new UnauthorizedException('The provided token is invalid');
         // add validationfor the token expiration
-
         const { tokenVerified, error } = this.jwtService.verify(token, {
           secret: this.configService.get('SECRET_KEY'),
         });
