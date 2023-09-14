@@ -30,7 +30,7 @@ export class News extends InitiatorAudit {
   @ManyToOne(() => User)
   writer: User;
 
-  @Column()
+  @Column({nullable: true})
   likes: number;
 
   constructor(
