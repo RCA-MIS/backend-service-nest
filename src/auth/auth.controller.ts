@@ -3,9 +3,11 @@ import {
   BadRequestException,
   Body,
   Controller,
+  ForbiddenException,
   Get,
   Post,
   Req,
+  Res,
 } from '@nestjs/common';
 import { LoginDTO } from 'src/dtos/lodin.dto';
 import { UsersService } from 'src/users/users.service';
@@ -29,7 +31,9 @@ export class AuthController {
 
   @Post('/login')
   async login(@Body() dto: LoginDTO): Promise<ApiResponse> {
-    this.isUserAvailable = await this.userService.getUserByEmail(dto.email);
+    this.isUserAvailable = await this.userService.getOneByEmail(dto.email);
+    if (!this.isUserAvailable)
+      throw new ForbiddenException('Invalid email or password');
     const arePasswordsMatch = await bcrypt.compare(
       dto.password.toString(),
       this.isUserAvailable.password.toString(),
@@ -69,7 +73,7 @@ export class AuthController {
     );
   }
   @Get('/get-profile')
-  async getProfile(@Req() req: Request, @Req() res: Response) {
+  async getProfile(@Req() req: Request, @Res() res: Response) {
     let profile = await this.authService.getProfile(req, res);
     return profile;
   }

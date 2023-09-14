@@ -16,6 +16,14 @@ export class WebContentService {
     private webContentRepository: Repository<WebContent>,
   ) {}
 
+  async getContent() {
+    try {
+      return await this.webContentRepository.find({});
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createWebContent(dto: CreateWebsiteContentDTO) {
     const isContentAvailable = await this.webContentRepository.find();
     if (isContentAvailable == null)
