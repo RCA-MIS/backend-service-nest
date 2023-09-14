@@ -17,8 +17,8 @@ export class Project {
     @Column()
      status: string;
 
-     @Column()
-        image: string;
+     @Column({nullable : true})
+     image: string;
 
     @ManyToOne(()=> User)
      user: User;
