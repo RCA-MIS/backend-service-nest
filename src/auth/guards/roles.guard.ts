@@ -4,6 +4,7 @@ import {
   ExecutionContext,
   UnauthorizedException,
   Inject,
+  BadRequestException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
@@ -31,16 +32,25 @@ export class RolesGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
     const authorization = req.headers.authorization;
     let user: User = null;
+    if(authorization == undefined || authorization == null || authorization == "") throw new UnauthorizedException('Please you are not authorized to access resource');                                                               
     if (authorization) {
       const token = authorization.split(' ')[1];
       if (!authorization.toString().startsWith('Bearer '))
         throw new UnauthorizedException('The provided token is invalid');
-      const { tokenVerified, error } = this.jwtService.verify(token, {
-        secret: this.configService.get('SECRET_KEY'),
-      });
-      if (error) throw new UnauthorizedException(error.message);
-      const details: any = await this.jwtService.decode(token);
-      user = await this.userService.getUserById(details.id, 'User');
+
+      try {
+        const payload = this.jwtService.verify(token , {
+          secret : this.configService.get('SECRET_KEY')
+        })
+        req['user'] = payload;
+        user = await this.userService.getUserById(payload.id, 'User');
+      } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+          throw new BadRequestException('Token has expired');
+        } else {
+          throw new UnauthorizedException('Token is invalid');
+        }
+      }
     }
 
     let type: boolean = false;
