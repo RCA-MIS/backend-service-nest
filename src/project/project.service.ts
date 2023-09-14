@@ -7,6 +7,7 @@ import { NotFoundException } from '@nestjs/common/exceptions';
 import { CreateProjectDto } from 'src/dtos/create-project.dto';
 import { UsersService } from 'src/users/users.service';
 import { FilesService } from 'src/files/files.service';
+import { log } from 'console';
 
 @Injectable()
 export class ProjectService {
@@ -65,10 +66,10 @@ export class ProjectService {
         });
         if(project){
             let newImage;
-            if(project.image != null || project.image != undefined || project.image != ""){
-                newImage =this.fileService.updateFile(project.image , file);
-            }else{
+            if(project.image == null){
                 newImage = await this.fileService.uploadFile(file);
+            }else{
+                newImage =this.fileService.updateFile(project.image , file);
             }
             project.image = newImage;
             await this.projectRepo.save(project);
