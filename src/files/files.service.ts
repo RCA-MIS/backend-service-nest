@@ -58,7 +58,7 @@ export class FilesService {
       await mkdirp(directoryPath);
     } catch (error) {
       // Handle any errors that occur during directory creation
-      throw error;
+      return new Error(error);
     }
   }
 
