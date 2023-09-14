@@ -62,7 +62,7 @@ export class UsersService {
       where: {
         email: email,
       },
-      relations: ['roles'],
+      relations: ['roles', 'company'],
     });
     return user;
   }
@@ -96,7 +96,12 @@ export class UsersService {
         'This account is not yet verified, please check your gmail inbox for verification details',
       );
     const tokens = this.utilsService.getTokens(user);
-    return tokens;
+    delete user.password;
+    return {
+      access: (await tokens).accessToken,
+      refresh_token: (await tokens).refreshToken,
+      user: user,
+    };
   }
   async verifyAccount(email: string) {
     const verifiedAccount = await this.getUserByEmail(email);
