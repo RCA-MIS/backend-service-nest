@@ -27,8 +27,12 @@ export class UserMiddleWare implements NestMiddleware {
       req.baseUrl == '/users/create' ||
       req.baseUrl == '/auth/verify_account' ||
       req.baseUrl == '/auth/reset_password' ||
-      req.baseUrl == '/news/all' ||
-      req.baseUrl == '/web-content'
+      req.baseUrl == '/news/all',
+      req.baseUrl == '/projects/all',
+      req.baseUrl == '/webcontent/all',
+      req.baseUrl == '/comments/all',
+      req.baseUrl == '/projects/:id',
+      req.baseUrl == '/news/:id'
     ) {
       next();
     } else {
@@ -36,6 +40,8 @@ export class UserMiddleWare implements NestMiddleware {
         const token = authorization.split(' ')[1];
         if (!authorization.toString().startsWith('Bearer '))
           throw new UnauthorizedException('The provided token is invalid');
+        // add validationfor the token expiration
+
         const { tokenVerified, error } = this.jwtService.verify(token, {
           secret: this.configService.get('SECRET_KEY'),
         });
@@ -51,4 +57,5 @@ export class UserMiddleWare implements NestMiddleware {
       }
     }
   }
+
 }
