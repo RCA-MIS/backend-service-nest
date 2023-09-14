@@ -30,7 +30,6 @@ import { UserMiddleWare } from './middlewares/user.middleware';
 import { WebContentModule } from './web-content/web-content.module';
 import { WebContent } from './entities/webcontent.entity';
 import { News } from './entities/news.entity';
-import { File } from './fileHandling/File';
 import { Report } from './entities/report.enity';
 import { MarksModule } from './marks/marks.module';
 import { TermModule } from './term/term.module';
@@ -64,7 +63,6 @@ import { UtilsModule } from './utils/utils.module';
           Student,
           Teacher,
           WebContent,
-          File,
           Report,
           Project,
           News,

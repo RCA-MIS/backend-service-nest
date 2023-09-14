@@ -17,7 +17,6 @@ import { EGender } from '../Enum/EGender.enum';
 import { EAccountStatus } from '../Enum/EAccountStatus.enum';
 import { Role } from 'src/entities/role.entity';
 import { InitiatorAudit } from 'src/audits/Initiator.audit';
-import { File } from '../fileHandling/File';
 @Entity('users')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class User extends InitiatorAudit {
@@ -54,7 +53,7 @@ export class User extends InitiatorAudit {
   @JoinColumn({
     name: 'profile_picture',
   })
-  profile_pic: File;
+  profile_pic: string;
 
   @Column({
     nullable: true,
