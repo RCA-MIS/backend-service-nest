@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Inject,
   Post,
   UploadedFile,
@@ -21,6 +22,16 @@ export class WebContentController {
     @Inject(WebContentService)
     private readonly webContentService: WebContentService,
   ) {}
+
+  @Get()
+  getContent() {
+    return new ApiResponse(
+      true,
+      'Web content retrieved successfully',
+      this.webContentService.getContent(),
+    );
+  }
+
   @Post('create')
   @UseInterceptors(
     FileFieldsInterceptor([

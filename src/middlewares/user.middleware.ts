@@ -27,7 +27,8 @@ export class UserMiddleWare implements NestMiddleware {
       req.baseUrl == '/users/create' ||
       req.baseUrl == '/auth/verify_account' ||
       req.baseUrl == '/auth/reset_password' ||
-      req.baseUrl == '/news/all'
+      req.baseUrl == '/news/all' ||
+      req.baseUrl == '/web-content'
     ) {
       next();
     } else {
