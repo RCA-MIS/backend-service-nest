@@ -23,15 +23,20 @@ export class UserMiddleWare implements NestMiddleware {
       req.baseUrl == '' ||
       req.baseUrl == '/favicon.ico' ||
       req.baseUrl == '/auth/login' ||
+      req.baseUrl == '/api' ||
+      req.baseUrl == "auth/verify_account" ||
       req.baseUrl == '/api/swagger-docs.html' ||
       req.baseUrl == '/users/create' ||
       req.baseUrl == '/auth/verify_account' ||
       req.baseUrl == '/auth/reset_password' ||
-      req.baseUrl == '/news/all',
-      req.baseUrl == '/projects/all',
-      req.baseUrl == '/webcontent/all',
-      req.baseUrl == '/comments/all',
-      req.baseUrl == '/projects/:id',
+      req.baseUrl == '/news/all' || 
+      req.baseUrl == '/projects/all' ||
+      req.baseUrl == '/webcontent/all' || 
+      req.baseUrl == '/comments/all' ||
+      req.baseUrl == '/' ||
+      req.baseUrl == '/comments/:id' ||
+      req.baseUrl == '/files/:filename' ||
+      req.baseUrl == '/projects/:id' ||
       req.baseUrl == '/news/:id'
     ) {
       next();
