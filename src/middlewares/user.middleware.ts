@@ -20,19 +20,20 @@ export class UserMiddleWare implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const authorization = req.headers.authorization;
     if (
-      req.baseUrl == '' ||
-      req.baseUrl == '/favicon.ico' ||
-      req.baseUrl == '/auth/login' ||
-      req.baseUrl == '/api/swagger-docs.html' ||
-      req.baseUrl == '/users/create' ||
-      req.baseUrl == '/auth/verify_account' ||
-      req.baseUrl == '/auth/reset_password' ||
-      req.baseUrl == '/news/all',
-      req.baseUrl == '/projects/all',
-      req.baseUrl == '/webcontent/all',
-      req.baseUrl == '/comments/all',
-      req.baseUrl == '/projects/:id',
-      req.baseUrl == '/news/:id'
+      (req.baseUrl == '' ||
+        req.baseUrl == '/favicon.ico' ||
+        req.baseUrl == '/auth/login' ||
+        req.baseUrl == '/api/swagger-docs.html' ||
+        req.baseUrl == '/users/create' ||
+        req.baseUrl == '/auth/verify_account' ||
+        req.baseUrl == '/auth/reset_password' ||
+        req.baseUrl == '/news/all' ||
+        req.baseUrl == '/projects/all' ||
+        req.baseUrl == '/webcontent/all' ||
+        req.baseUrl == '/comments/all' ||
+        req.baseUrl == '/projects/:id' ||
+        req.baseUrl == '/news/:id',
+      req.baseUrl == 'news/all')
     ) {
       next();
     } else {
@@ -58,5 +59,4 @@ export class UserMiddleWare implements NestMiddleware {
       }
     }
   }
-
 }
