@@ -3,6 +3,7 @@ import { extname } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
+import * as path from 'path';
 
 @Injectable()
 export class FilesService {
@@ -59,5 +60,21 @@ export class FilesService {
       // Handle any errors that occur during directory creation
       throw error;
     }
+  }
+
+
+  async getFile(filename: string): Promise<string | null> {
+    const fileLocation = path.join(__dirname, 'uploads', filename); // Specify the path to your uploads folder
+
+    return new Promise((resolve) => {
+      // Check if the file exists asynchronously
+      fs.access(fileLocation, fs.constants.F_OK, (err) => {
+        if (err) {
+          resolve(null); // File does not exist
+        } else {
+          resolve(fileLocation); // File exists
+        }
+      });
+    });
   }
 }

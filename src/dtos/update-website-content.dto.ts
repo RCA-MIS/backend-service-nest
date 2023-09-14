@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { File } from '../fileHandling/File';
 
 export class UpdateWebContentDTO {
   @IsNotEmpty()
