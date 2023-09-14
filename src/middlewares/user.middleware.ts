@@ -26,14 +26,14 @@ export class UserMiddleWare implements NestMiddleware {
       req.baseUrl == '/favicon.ico' ||
       req.baseUrl == '/auth/login' ||
       req.baseUrl == '/api' ||
-      req.baseUrl == "auth/verify_account" ||
+      req.baseUrl == 'auth/verify_account' ||
       req.baseUrl == '/api/swagger-docs.html' ||
       req.baseUrl == '/users/create' ||
       req.baseUrl == '/auth/verify_account' ||
       req.baseUrl == '/auth/reset_password' ||
-      req.baseUrl == '/news/all' || 
+      req.baseUrl == '/news/all' ||
       req.baseUrl == '/projects/all' ||
-      req.baseUrl == '/webcontent/all' || 
+      req.baseUrl == '/webcontent/all' ||
       req.baseUrl == '/comments/all' ||
       req.baseUrl == '/' ||
       req.baseUrl == '/comments/:id' ||
@@ -63,14 +63,14 @@ export class UserMiddleWare implements NestMiddleware {
             throw new UnauthorizedException('Token is invalid');
           }
         }
-        
+       
         next();
       } else {
+        console.log(req.baseUrl);
         throw new UnauthorizedException(
           'Please you are not authorized to access resource',
         );
       }
     }
   }
-
 }
