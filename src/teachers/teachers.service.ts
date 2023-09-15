@@ -13,12 +13,15 @@ import { Repository } from 'typeorm';
 import { CreateTeacherDTO } from 'src/dtos/create-teacher.dto';
 import { UpdateUserDto } from 'src/dtos/update-user.dto';
 import { EAccountStatus } from 'src/Enum/EAccountStatus.enum';
+import { RoleService } from 'src/roles/role.service';
+import { ERole } from 'src/Enum/ERole.enum';
 
 @Injectable()
 export class TeachersService {
   constructor(
     @InjectRepository(Teacher) private teacherRepo: Repository<Teacher>,
     @Inject(UsersService) private userService: UsersService,
+    private rolService: RoleService,
   ) {}
 
   async createTeacher(dto: CreateTeacherDTO) {
@@ -33,7 +36,11 @@ export class TeachersService {
       default:
         throw new BadRequestException('The provided gender is invalid');
     }
-    const teacher: Teacher = new Teacher(
+
+    const teacherRole = await this.rolService.getRoleByName(
+      ERole[ERole.TEACHER],
+    );
+    let teacher: Teacher = new Teacher(
       dto.firstName,
       dto.lastName,
       dto.email,
@@ -44,7 +51,7 @@ export class TeachersService {
       dto.password,
       EAccountStatus.WAIT_EMAIL_VERIFICATION,
     );
-
+    teacher.roles = [teacherRole];
     return this.teacherRepo.save(teacher);
   }
 

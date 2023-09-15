@@ -13,6 +13,7 @@ import { UpdateStudentDTO } from 'src/dtos/update-student.dto';
 import { UsersService } from 'src/users/users.service';
 import { EAccountStatus } from 'src/Enum/EAccountStatus.enum';
 import { EGender } from 'src/Enum/EGender.enum';
+import { ERole } from 'src/Enum/ERole.enum';
 
 @Injectable()
 export class StudentsService {
@@ -44,7 +45,11 @@ export class StudentsService {
       default:
         throw new BadRequestException('The provided gender is invalid');
     }
-    const student = new Student(
+
+    const studentRole = await this.roleService.getRoleByName(
+      ERole[ERole.STUDENT],
+    );
+    let student = new Student(
       dto.firstName,
       dto.lastName,
       dto.email,
@@ -55,7 +60,8 @@ export class StudentsService {
       dto.password,
       EAccountStatus.WAIT_EMAIL_VERIFICATION,
     );
-    return this.studentRepo.save(dto);
+    student.roles = [studentRole];
+    return this.studentRepo.save(student);
   }
   async updateStudent(id: number, dto: UpdateStudentDTO) {
     const student = await this.userService.getUserByEmail(dto.email);
@@ -90,7 +96,6 @@ export class StudentsService {
     });
   }
 
-  
   getStudent(id: number) {
     return this.userService.getUserById(id, 'Student');
   }

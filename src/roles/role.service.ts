@@ -22,6 +22,13 @@ export class RoleService {
   async getAllRoles() {
     return await this.roleRepo.find();
   }
+  async getRoleByName(name: any) {
+    try {
+      return await this.roleRepo.findOne({ where: { role_name: name } });
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async getRoleById(id: number) {
     console.log(id);
