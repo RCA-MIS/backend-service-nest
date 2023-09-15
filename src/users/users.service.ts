@@ -9,9 +9,7 @@ import {
 } from '@nestjs/common/exceptions';
 import { EAccountStatus } from 'src/Enum/EAccountStatus.enum';
 import { EGender } from 'src/Enum/EGender.enum';
-import { MailingService } from 'src/mailing/mailing.service';
 import { ERole } from 'src/Enum/ERole.enum';
-import { Request, Response } from 'express';
 import { User } from 'src/entities/user.entity';
 import { RoleService } from 'src/roles/role.service';
 import { UtilsService } from 'src/utils/utils.service';
@@ -174,7 +172,7 @@ export class UsersService {
     const status: String =
       EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION].toString();
     let gender;
-    const role = await this.roleService.getRoleById(1);
+    const role = await this.roleService.getRoleByName(ERole[ERole.ADMIN]);
     switch (myGender.toLowerCase()) {
       case 'male':
         gender = EGender[EGender.MALE];
