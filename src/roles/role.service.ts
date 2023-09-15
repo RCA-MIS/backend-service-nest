@@ -30,14 +30,6 @@ export class RoleService {
     }
   }
 
-  async getRoleByName(roleName: any) {
-    try {
-      return await this.roleRepo.findOne({ where: { role_name: roleName } });
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async getRoleById(id: number) {
     console.log(id);
     const role = await this.roleRepo.findOne({
