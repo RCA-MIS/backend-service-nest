@@ -76,7 +76,7 @@ export class TeachersService {
     });
   }
   async getAllTeachers() {
-    return await this.teacherRepo.find();
+    return await this.teacherRepo.find({ relations: ['roles'] });
   }
 
   async getTeacher(id: number): Promise<Teacher> {

@@ -85,7 +85,7 @@ export class StudentsService {
     });
   }
   async getAllStudents() {
-    return await this.studentRepo.find();
+    return await this.studentRepo.find({ relations: ['roles'] });
   }
 
   async findOne(id: number) {
