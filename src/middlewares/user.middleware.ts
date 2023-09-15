@@ -31,7 +31,9 @@ export class UserMiddleWare implements NestMiddleware {
       req.baseUrl == '/auth/reset_password' ||
       req.baseUrl == '/news/all' ||
       req.baseUrl == '/projects/all' ||
-      req.baseUrl == '/webcontent/all' ||
+      req.baseUrl == '/web-content' ||
+      req.baseUrl == '/web-content/create' ||
+      req.baseUrl == '/web-content/update' ||
       req.baseUrl == '/comments/all' ||
       req.baseUrl == '/' ||
       req.baseUrl == '/comments/:id' ||

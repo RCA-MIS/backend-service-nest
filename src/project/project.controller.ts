@@ -8,7 +8,7 @@ import {
   Post,
   Delete,
   UseInterceptors,
-  UploadedFile
+  UploadedFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProjectService } from './project.service';
@@ -35,21 +35,26 @@ export class ProjectController {
   }
 
   @Post('/create')
-  @ApiBody({type : CreateProjectDto})
+  @ApiBody({ type: CreateProjectDto })
   @UseInterceptors(FileInterceptor('image'))
-  createProject(@Body() project: CreateProjectDto , @UploadedFile() file: Express.Multer.File) {
-    return this.projectService.createProject(project , file);
+  createProject(
+    @Body() project: CreateProjectDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.projectService.createProject(project, file);
   }
 
   @Patch('/update/image/:id')
   @UseInterceptors(FileInterceptor('image'))
-  updateProjectImage(@Param('id') id : string , @UploadedFile() file: Express.Multer.File) {
-    return this.projectService.updateProjectImage(parseInt(id) , file);
+  updateProjectImage(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.projectService.updateProjectImage(parseInt(id), file);
   }
 
-
   @Patch('/update/:id')
-  @ApiBody({type : UpdateProjectDto})
+  @ApiBody({ type: UpdateProjectDto })
   updateProject(@Param('id') id: string, @Body() project: UpdateProjectDto) {
     return this.projectService.updateProject(parseInt(id), project);
   }

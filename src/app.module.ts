@@ -41,6 +41,9 @@ import { AcademicYear } from './entities/academic_year.entity';
 import { Term } from './entities/term.entity';
 import { ReportCard } from './entities/report_card.entity';
 import { UtilsModule } from './utils/utils.module';
+import { RolesGuard } from './auth/guards/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -83,7 +86,7 @@ import { UtilsModule } from './utils/utils.module';
           strict: true,
         },
       },
-    }), 
+    }),
     UsersModule,
     TeachersModule,
     StudentsModule,
@@ -100,8 +103,10 @@ import { UtilsModule } from './utils/utils.module';
     CommentsModule,
     ReportCardModule,
     AcademicYearModule,
+    JwtModule,
   ],
   controllers: [AuthController, HomeController],
+  providers: [{ provide: APP_GUARD, useClass: RolesGuard }],
 })
 export class AppModule implements OnModuleInit {
   constructor(

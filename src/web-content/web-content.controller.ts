@@ -4,6 +4,7 @@ import {
   Get,
   Inject,
   Post,
+  Put,
   UploadedFile,
   UploadedFiles,
   UseInterceptors,
@@ -24,40 +25,71 @@ export class WebContentController {
   ) {}
 
   @Get()
-  getContent() {
+  async getContent() {
     return new ApiResponse(
       true,
       'Web content retrieved successfully',
-      this.webContentService.getContent(),
+      await this.webContentService.getContent(),
     );
   }
-
   @Post('create')
   @UseInterceptors(
     FileFieldsInterceptor([
-      { name: 'main', maxCount: 1 },
-      { name: 'vava', maxCount: 1 },
+      { name: 'abouUsImage', maxCount: 1 },
+      { name: 'landingBurnerImage', maxCount: 1 },
+      { name: 'innovationMainImage', maxCount: 1 },
+      { name: 'newsLetterCardImage', maxCount: 1 },
+      { name: 'newsLetterLargeImage', maxCount: 1 },
     ]),
   )
   async createWebContent(
-    @Body() dto: CreateWebsiteContentDTO,
-    // @UploadedFiles()
-    // files: { main?: Express.Multer.File[]; vava: Express.Multer.File[] },
+    @Body() dot: CreateWebsiteContentDTO,
+    @UploadedFiles()
+    files: {
+      abouUsImage?: Express.Multer.File[];
+      landingBurnerImage?: Express.Multer.File[];
+      innovationMainImage?: Express.Multer.File[];
+      newsLetterCardImage?: Express.Multer.File[];
+      newsLetterLargeImage?: Express.Multer.File[];
+    },
   ) {
-    // console.log(files);
     return new ApiResponse(
       true,
-      'The web content was created successfully ',
-      await this.webContentService.createWebContent(dto),
+      'web content created successfully',
+      await this.webContentService.createWebContent(
+        dot,
+        files.abouUsImage,
+        files.landingBurnerImage,
+        files.innovationMainImage,
+        files.newsLetterCardImage,
+        files.newsLetterLargeImage,
+      ),
     );
   }
 
-  @Post('update')
-  async updateWebContent(@Body() dto: UpdateWebContentDTO) {
+  @Put('update')
+  async updateWebContent(
+    @Body() dto: UpdateWebContentDTO,
+    @UploadedFiles()
+    files: {
+      abouUsImage?: Express.Multer.File[];
+      landingBurnerImage?: Express.Multer.File[];
+      innovationMainImage?: Express.Multer.File[];
+      newsLetterCardImage?: Express.Multer.File[];
+      newsLetterLargeImage?: Express.Multer.File[];
+    },
+  ) {
     return new ApiResponse(
       true,
       'the web content updated successfully',
-      await this.webContentService.UpdateContent(dto),
+      await this.webContentService.UpdateContent(
+        dto,
+        files.abouUsImage,
+        files.landingBurnerImage,
+        files.innovationMainImage,
+        files.newsLetterCardImage,
+        files.newsLetterLargeImage,
+      ),
     );
   }
 }

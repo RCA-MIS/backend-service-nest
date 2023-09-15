@@ -3,15 +3,15 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class UpdateWebContentDTO {
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   @ApiProperty()
   yearsOfFoundation: number;
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   @ApiProperty()
   studentsNumber: number;
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   @ApiProperty()
   startupsNumber: number;
   @IsString()

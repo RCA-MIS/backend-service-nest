@@ -24,13 +24,13 @@ export class News extends InitiatorAudit {
   })
   longtDescription: string;
 
-  @Column()
+  @Column({ nullable: true })
   image: string;
 
   @ManyToOne(() => User)
   writer: User;
 
-  @Column()
+  @Column({ nullable: true })
   likes: number;
 
   constructor(

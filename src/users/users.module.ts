@@ -12,8 +12,6 @@ import { User } from '../entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoleModule } from 'src/roles/role.module';
 import { UtilsModule } from 'src/utils/utils.module';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { APP_GUARD, Reflector } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { UserMiddleWare } from 'src/middlewares/user.middleware';
 
@@ -27,7 +25,7 @@ import { UserMiddleWare } from 'src/middlewares/user.middleware';
     UtilsModule,
   ],
   exports: [UsersService],
-  providers: [UsersService, { provide: APP_GUARD, useClass: RolesGuard }],
+  providers: [UsersService],
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

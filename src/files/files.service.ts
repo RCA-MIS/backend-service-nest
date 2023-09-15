@@ -7,11 +7,10 @@ import * as path from 'path';
 
 @Injectable()
 export class FilesService {
-
   async uploadFile(file: Express.Multer.File): Promise<string> {
     const uniqueFileName = this.generateUniqueFileName(file);
     const filePath = `uploads/${uniqueFileName}`;
-    
+
     // Check if the 'uploads' directory exists, and create it if it doesn't
     await this.ensureUploadsDirectoryExists();
 
@@ -19,6 +18,14 @@ export class FilesService {
     fs.writeFileSync(filePath, file.buffer);
 
     return uniqueFileName;
+  }
+  async uploadArrayOfFiles(files: Express.Multer.File[]): Promise<string> {
+    const uniqueName = this.generateUniqueFileName(files[0]);
+    const filePath = `uploads/${uniqueName}`;
+
+    await this.ensureUploadsDirectoryExists();
+    fs.writeFileSync(filePath, files[0].buffer);
+    return uniqueName;
   }
 
   async deleteFile(fileName: string): Promise<void> {
@@ -61,7 +68,6 @@ export class FilesService {
       throw error;
     }
   }
-
 
   async getFile(filename: string): Promise<string | null> {
     const fileLocation = path.join(__dirname, 'uploads', filename); // Specify the path to your uploads folder
