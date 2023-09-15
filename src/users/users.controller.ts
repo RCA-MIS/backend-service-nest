@@ -15,6 +15,7 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/utils/decorators/roles.decorator';
+import { Role } from 'src/entities/role.entity';
 
 @ApiTags('users')
 @Controller('users')
@@ -37,19 +38,21 @@ export class UsersController {
   }
 
   @Post('/create')
-  // @Roles('ADMIN', 'TEACHER')
+  @Roles('ADMIN', 'TEACHER')
   @ApiBody({ type: CreateUserDto })
   createAdminAccount(@Body() body: CreateUserDto) {
     return this.usersService.createUser(body);
   }
 
   @Patch('update/:id')
+  @Roles('ADMIN')
   @ApiBody({ type: UpdateUserDto })
   updateUser(@Param('id') id: number, @Body() body: UpdateUserDto) {
     return this.usersService.updateUser(id, body);
   }
 
-  @Delete('delete/;id')
+  @Delete('delete/:id')
+  @Roles('ADMIN')
   deleteUser(@Param('id') id: number) {
     return this.usersService.deleteUser(id);
   }

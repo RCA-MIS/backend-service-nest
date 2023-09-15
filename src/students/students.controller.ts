@@ -54,11 +54,11 @@ export class StudentsController {
     );
   }
   @Get()
-  getAllStudents() {
+  async getAllStudents() {
     return new ApiResponse(
       true,
       'All students retrieved successdully',
-      this.studentService.getAllStudents(),
+      await this.studentService.getAllStudents(),
     );
   }
   @Get(':id')
