@@ -7,6 +7,7 @@ import { NotFoundException } from '@nestjs/common/exceptions';
 import { CreateProjectDto } from 'src/dtos/create-project.dto';
 import { UsersService } from 'src/users/users.service';
 import { FilesService } from 'src/files/files.service';
+import { log } from 'console';
 
 @Injectable()
 export class ProjectService {
@@ -34,7 +35,12 @@ export class ProjectService {
         if(!user) return new NotFoundException(`User with email: ${userEmail} not found`);
         const createdAt = new Date(Date.now())
         const updatedAt = null;
-        const image = await this.fileService.uploadFile(file);
+        let image;
+        if(!file || file == null || file == undefined) {
+            image = null;
+        }else{
+            image = await this.fileService.uploadFile(file);
+        }
         let newstatus = status.toString();
         const projectEntity = this.projectRepo.create({
             name,
@@ -59,8 +65,13 @@ export class ProjectService {
             }
         });
         if(project){
-            const image = await this.fileService.uploadFile(file);
-            project.image = image;
+            let newImage;
+            if(project.image == null){
+                newImage = await this.fileService.uploadFile(file);
+            }else{
+                newImage =this.fileService.updateFile(project.image , file);
+            }
+            project.image = newImage;
             await this.projectRepo.save(project);
             return {
                 message : "Project image updated successfully"
@@ -96,6 +107,8 @@ export class ProjectService {
         if(!project){
             return new NotFoundException("Project not found");
         }
+
+        await this.fileService.deleteFile(project.image);
 
         this.projectRepo.remove(project);
         return {

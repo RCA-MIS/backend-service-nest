@@ -4,11 +4,13 @@ import {
   Injectable,
   NestMiddleware,
   UnauthorizedException,
+  BadRequestException
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { NextFunction, Request } from 'express';
 import { UsersService } from 'src/users/users.service';
+
 
 @Injectable()
 export class UserMiddleWare implements NestMiddleware {
@@ -37,7 +39,7 @@ export class UserMiddleWare implements NestMiddleware {
       req.baseUrl == '/comments/all' ||
       req.baseUrl == '/' ||
       req.baseUrl == '/comments/:id' ||
-      req.baseUrl == '/files/:filename' ||
+      req.baseUrl == '/files' ||
       req.baseUrl == '/projects/:id' ||
       req.baseUrl == '/news/:id'
     ) {
@@ -48,13 +50,22 @@ export class UserMiddleWare implements NestMiddleware {
         if (!authorization.toString().startsWith('Bearer '))
           throw new UnauthorizedException('The provided token is invalid');
         // add validationfor the token expiration
-        const { tokenVerified, error } = this.jwtService.verify(token, {
-          secret: this.configService.get('SECRET_KEY'),
-        });
-        if (error) throw new UnauthorizedException(error.message);
-        const details: any = await this.jwtService.decode(token);
-        const user = await this.userService.getUserById(details.id, 'User');
-        req['user'] = user;
+        let user;
+
+        try {
+          const payload = this.jwtService.verify(token , {
+            secret : this.configService.get('SECRET_KEY')
+          })
+          req['user'] = payload;
+          user = await this.userService.getUserById(payload.id, 'User');
+        } catch (error) {
+          if (error.name === 'TokenExpiredError') {
+            throw new BadRequestException('Token has expired');
+          } else {
+            throw new UnauthorizedException('Token is invalid');
+          }
+        }
+       
         next();
       } else {
         console.log(req.baseUrl);
