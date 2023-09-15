@@ -40,6 +40,7 @@ export class RolesGuard implements CanActivate {
       throw new UnauthorizedException(
         'Please you are not authorized to access resource',
       );
+
     if (authorization) {
       const token = authorization.split(' ')[1];
       if (!authorization.toString().startsWith('Bearer '))

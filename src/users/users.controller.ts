@@ -38,7 +38,6 @@ export class UsersController {
   }
 
   @Post('/create')
-  @Roles('ADMIN', 'TEACHER')
   @ApiBody({ type: CreateUserDto })
   createAdminAccount(@Body() body: CreateUserDto) {
     return this.usersService.createUser(body);

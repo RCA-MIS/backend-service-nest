@@ -4,13 +4,12 @@ import {
   Injectable,
   NestMiddleware,
   UnauthorizedException,
-  BadRequestException
+  BadRequestException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { NextFunction, Request } from 'express';
 import { UsersService } from 'src/users/users.service';
-
 
 @Injectable()
 export class UserMiddleWare implements NestMiddleware {
@@ -53,9 +52,9 @@ export class UserMiddleWare implements NestMiddleware {
         let user;
 
         try {
-          const payload = this.jwtService.verify(token , {
-            secret : this.configService.get('SECRET_KEY')
-          })
+          const payload = this.jwtService.verify(token, {
+            secret: this.configService.get('SECRET_KEY'),
+          });
           req['user'] = payload;
           user = await this.userService.getUserById(payload.id, 'User');
         } catch (error) {
@@ -65,7 +64,7 @@ export class UserMiddleWare implements NestMiddleware {
             throw new UnauthorizedException('Token is invalid');
           }
         }
-       
+
         next();
       } else {
         console.log(req.baseUrl);
