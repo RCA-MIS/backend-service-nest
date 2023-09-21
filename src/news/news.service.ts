@@ -7,6 +7,7 @@ import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { FilesService } from 'src/files/files.service';
+import { Express } from 'express';
 
 @Injectable()
 export class NewsService {
@@ -28,21 +29,39 @@ export class NewsService {
     });
   }
 
-  async createNews(news: CreateNewsDto, file: Express.Multer.File) {
+  async createNews(news: CreateNewsDto, files: Express.Multer.File[]) {
     const { title, shortDescription, longDescription, userEmail } = news;
     const writer = await this.userService.getUserByEmail(userEmail);
     if (!writer)
       return new NotFoundException(`User with email: ${userEmail} not found`);
     let likes = 0;
+    let imageUpload : Express.Multer.File;
+    let attachmentUpload  : Express.Multer.File;
+
+    files.forEach(file => {
+      if(file.fieldname === 'image'){
+        imageUpload = file;
+      }
+      if(file.fieldname === 'attachment'){
+        attachmentUpload = file;
+      }
+    });
+
     try {
-      const image = await this.fileService.uploadFile(file);
-      if (!image) return new NotFoundException('Image not found ');
-      console.log(image);
+      const image = await this.fileService.uploadFile(imageUpload);
+      if (!image || image == null || image ==undefined) return new NotFoundException('Image not found ');
+      let attachementFile : string;
+      if(!attachmentUpload || attachmentUpload == null || attachmentUpload ==undefined){
+         attachementFile = null
+      }else{
+      attachementFile = await this.fileService.uploadFile(attachmentUpload);
+      }
       const newToCreate = new News(
         title,
         shortDescription,
         longDescription,
         image,
+        attachementFile
       );
       const createdNew = await this.newsRepo.save(newToCreate);
       return {

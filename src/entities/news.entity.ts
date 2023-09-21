@@ -33,16 +33,21 @@ export class News extends InitiatorAudit {
   @Column({nullable: true})
   likes: number;
 
+  @Column({nullable: true})
+  attachment : string;
+
   constructor(
     title: string,
     shortDesc: string,
     longDesc: string,
     image: string,
+    attachment : string
   ) {
     super();
     this.title = title;
     this.shortDescription = shortDesc;
     this.longtDescription = longDesc;
     this.image = image;
+    this.attachment = attachment;
   }
 }
