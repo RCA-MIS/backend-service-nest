@@ -16,6 +16,8 @@ import { UpdateUserDto } from '../dtos/update-user.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/utils/decorators/roles.decorator';
 import { Role } from 'src/entities/role.entity';
+import { UUID } from 'crypto';
+import { ApiResponse } from 'src/payload/ApiResponse';
 
 @ApiTags('users')
 @Controller('users')
@@ -29,7 +31,7 @@ export class UsersController {
   }
 
   @Get('/:id')
-  async getUserById(@Param('id') id: number) {
+  async getUserById(@Param('id') id: UUID) {
     const user = await this.usersService.getUserById(id, 'User');
     if (!user) {
       throw new NotFoundException('User not found');
@@ -46,13 +48,26 @@ export class UsersController {
   @Patch('update/:id')
   @Roles('ADMIN')
   @ApiBody({ type: UpdateUserDto })
-  updateUser(@Param('id') id: number, @Body() body: UpdateUserDto) {
+  updateUser(@Param('id') id: UUID, @Body() body: UpdateUserDto) {
     return this.usersService.updateUser(id, body);
+  }
+
+  @Patch('/{assign-role}/:userId/:roleName/:userType')
+  async assignRoleToUser(
+    @Param('userId') userId: UUID,
+    @Param('roleName') roleName: any,
+    @Param('userType') userType: string,
+  ) {
+    return new ApiResponse(
+      true,
+      'The role has been assigned successfully',
+      await this.usersService.assignRoleToUser(userId, roleName, userType),
+    );
   }
 
   @Delete('delete/:id')
   @Roles('ADMIN')
-  deleteUser(@Param('id') id: number) {
+  deleteUser(@Param('id') id: UUID) {
     return this.usersService.deleteUser(id);
   }
 }

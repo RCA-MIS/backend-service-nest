@@ -16,6 +16,7 @@ import { NotFoundException } from '@nestjs/common';
 import { CreateNewsDto } from 'src/dtos/create-news.dto';
 import { UpdateNewsDto } from 'src/dtos/update-news.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
 @ApiTags('news')
 @Controller('news')
@@ -35,6 +36,7 @@ export class NewsController {
   }
 
   @Post('/create')
+  @Roles('ADMIN', 'PUBLISHER')
   @ApiBody({ type: CreateNewsDto })
   @UseInterceptors(FileInterceptor('image'))
   createProject(
@@ -45,6 +47,7 @@ export class NewsController {
   }
 
   @Patch('/update/:id')
+  @Roles('ADMIN', 'PUBLISHER')
   @ApiBody({ type: UpdateNewsDto })
   updateProject(@Param('id') id: string, @Body() news: UpdateNewsDto) {
     return this.newService.updateNews(parseInt(id), news);
@@ -52,6 +55,7 @@ export class NewsController {
 
   @Patch('/update/image/:id')
   @UseInterceptors(FileInterceptor('image'))
+  @Roles('ADMIN', 'PUBLISHER')
   updateProjectImage(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
@@ -60,11 +64,13 @@ export class NewsController {
   }
 
   @Patch('/like/:id')
+  @Roles('ADMIN', 'PUBLISHER')
   likeProject(@Param('id') id: string) {
     return this.newService.likeNews(parseInt(id));
   }
 
   @Delete('/delete/:id')
+  @Roles('ADMIN', 'PUBLISHER')
   deleteProject(@Param('id') id: string) {
     return this.newService.deleteNews(parseInt(id));
   }

@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  forwardRef,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EGender } from 'src/Enum/EGender.enum';
@@ -15,12 +16,13 @@ import { UpdateUserDto } from 'src/dtos/update-user.dto';
 import { EAccountStatus } from 'src/Enum/EAccountStatus.enum';
 import { RoleService } from 'src/roles/role.service';
 import { ERole } from 'src/Enum/ERole.enum';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class TeachersService {
   constructor(
     @InjectRepository(Teacher) private teacherRepo: Repository<Teacher>,
-    @Inject(UsersService) private userService: UsersService,
+    @Inject(forwardRef(() => RoleService))
     private rolService: RoleService,
   ) {}
 
@@ -55,7 +57,7 @@ export class TeachersService {
     return this.teacherRepo.save(teacher);
   }
 
-  async eTeacher(id: number, dto: UpdateUserDto) {
+  async eTeacher(id: UUID, dto: UpdateUserDto) {
     const isTeachervailable: Teacher = await this.getTeacher(id);
     if (!isTeachervailable)
       throw new NotFoundException('The teacher with provided id is not found');
@@ -63,7 +65,7 @@ export class TeachersService {
     return this.teacherRepo.save(isTeachervailable);
   }
 
-  async deleteTeacher(id: number) {
+  async deleteTeacher(id: UUID) {
     const isTeachervailable: Teacher = await this.getTeacher(id);
     await this.teacherRepo.remove(isTeachervailable);
   }
@@ -79,7 +81,7 @@ export class TeachersService {
     return await this.teacherRepo.find({ relations: ['roles'] });
   }
 
-  async getTeacher(id: number): Promise<Teacher> {
+  async getTeacher(id: UUID): Promise<Teacher> {
     const availableTeacher = await this.teacherRepo.findOne({
       where: { id: id },
     });

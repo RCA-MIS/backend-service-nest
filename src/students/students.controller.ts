@@ -14,6 +14,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { CreateStudentDTO } from 'src/dtos/create-student.dto';
 import { UpdateStudentDTO } from 'src/dtos/update-student.dto';
 import { ApiResponse } from 'src/payload/ApiResponse';
+import { UUID } from 'crypto';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
 @ApiTags('students')
 @Controller('students')
@@ -22,6 +24,7 @@ export class StudentsController {
     @Inject(StudentsService) private studentService: StudentsService,
   ) {}
   @Post('create')
+  @Roles('ADMIN', 'TEACHER')
   async createStudent(@Body() dto: CreateStudentDTO) {
     return new ApiResponse(
       true,
@@ -30,6 +33,7 @@ export class StudentsController {
     );
   }
   @Delete('update:/id')
+  @Roles('ADMIN', 'TEACHER')
   async updateStudent(@Param('id') id: number, @Body() dto: UpdateStudentDTO) {
     return new ApiResponse(
       true,
@@ -38,7 +42,8 @@ export class StudentsController {
     );
   }
   @Delete('delete/:id')
-  deleteStudent(@Param('id') id: number) {
+  @Roles('ADMIN')
+  deleteStudent(@Param('id') id: UUID) {
     return new ApiResponse(
       true,
       'Student deleted successdully',
@@ -46,6 +51,7 @@ export class StudentsController {
     );
   }
   @Delete('delete/all')
+  @Roles('ADMIN', 'TEACHER')
   delteAllStudents() {
     return new ApiResponse(
       true,
@@ -54,6 +60,7 @@ export class StudentsController {
     );
   }
   @Get()
+  @Roles('ADMIN', 'TEACHER')
   async getAllStudents() {
     return new ApiResponse(
       true,
@@ -62,7 +69,8 @@ export class StudentsController {
     );
   }
   @Get(':id')
-  getStudent(@Param('id') id: number) {
+  @Roles('ADMIN', 'TEACHER')
+  getStudent(@Param('id') id: UUID) {
     return new ApiResponse(
       true,
       'student have retieved successfully',

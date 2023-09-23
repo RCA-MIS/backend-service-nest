@@ -41,7 +41,7 @@
     "file-type": "^18.5.0",
     "googleapis": "^125.0.0",
     "handlebars": "^4.7.8",
-    "nodemailer": "^6.9.4",
+    "nodemailer": "^6.9.5",
     "pg": "^8.11.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",

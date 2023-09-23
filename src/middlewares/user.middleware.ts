@@ -40,10 +40,12 @@ export class UserMiddleWare implements NestMiddleware {
       req.baseUrl == '/comments/:id' ||
       req.baseUrl == '/files' ||
       req.baseUrl == '/projects/:id' ||
-      req.baseUrl == '/news/:id'
+      req.baseUrl == '/news/:id' ||
+      req.baseUrl == '/news/*'
     ) {
       next();
     } else {
+      console;
       if (authorization) {
         const token = authorization.split(' ')[1];
         if (!authorization.toString().startsWith('Bearer '))

@@ -5,10 +5,24 @@ import { Repository } from 'typeorm';
 import { Role } from '../entities/role.entity';
 import { ERole } from '../Enum/ERole.enum';
 import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
+import { UUID } from 'crypto';
+import { UsersService } from 'src/users/users.service';
+import { forwardRef, Inject } from '@nestjs/common';
+import { UsersModule } from 'src/users/users.module';
+import { EUserType } from 'src/Enum/EUserType.enum';
+import { StudentsService } from 'src/students/students.service';
+import { TeachersService } from 'src/teachers/teachers.service';
 
 @Injectable()
 export class RoleService {
-  constructor(@InjectRepository(Role) public roleRepo: Repository<Role>) {}
+  constructor(
+    @InjectRepository(Role) public roleRepo: Repository<Role>,
+    @Inject(forwardRef(() => UsersService))
+    private userService: UsersService,
+    private studentService: StudentsService,
+    @Inject(forwardRef(() => TeachersService))
+    private teacherSerice: TeachersService,
+  ) {}
   createRoles() {
     const roleArray: Array<ERole> = [ERole.ADMIN, ERole.STUDENT, ERole.TEACHER];
     roleArray.forEach((role) => {

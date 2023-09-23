@@ -4,4 +4,6 @@ export enum ERole {
   STUDENT,
   TEACHER,
   PUBLISHER,
+  CLASS_MONITOR,
+  DOYEN,
 }

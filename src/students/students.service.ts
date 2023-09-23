@@ -3,6 +3,7 @@ import {
   ForbiddenException,
   Inject,
   Injectable,
+  forwardRef,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from 'src/entities/student.entity';
@@ -14,6 +15,8 @@ import { UsersService } from 'src/users/users.service';
 import { EAccountStatus } from 'src/Enum/EAccountStatus.enum';
 import { EGender } from 'src/Enum/EGender.enum';
 import { ERole } from 'src/Enum/ERole.enum';
+import { UUID } from 'crypto';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class StudentsService {
@@ -21,7 +24,7 @@ export class StudentsService {
   constructor(
     @InjectRepository(Student) private studentRepo: Repository<Student>,
     private mailingService: MailingService,
-    @Inject(UsersService) private userService: UsersService,
+    @Inject(forwardRef(() => UsersService)) private userService: UsersService,
   ) {}
 
   async createStudent(dto: CreateStudentDTO) {
@@ -63,12 +66,18 @@ export class StudentsService {
     student.roles = [studentRole];
     return this.studentRepo.save(student);
   }
+
+  async saveStudent(student: User) {
+    if (!student)
+      throw new BadRequestException('The provided student to save is null');
+    return await this.studentRepo.save(student);
+  }
   async updateStudent(id: number, dto: UpdateStudentDTO) {
     const student = await this.userService.getUserByEmail(dto.email);
     Object.assign(student, dto);
     return this.studentRepo.save(student);
   }
-  async deleteStudent(id: number) {
+  async deleteStudent(id: UUID) {
     const student = await this.studentRepo.find({
       where: {
         id: id,
@@ -88,7 +97,7 @@ export class StudentsService {
     return await this.studentRepo.find({ relations: ['roles'] });
   }
 
-  async findOne(id: number) {
+  async findOne(id: UUID) {
     return await this.studentRepo.findOne({
       where: {
         id: id,
@@ -96,7 +105,7 @@ export class StudentsService {
     });
   }
 
-  getStudent(id: number) {
+  getStudent(id: UUID) {
     return this.userService.getUserById(id, 'Student');
   }
 }

@@ -3,12 +3,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  IsNull,
-  OneToMany,
-  OneToOne,
-  ManyToOne,
   JoinColumn,
-  BaseEntity,
   TableInheritance,
   ManyToMany,
   JoinTable,
@@ -17,11 +12,12 @@ import { EGender } from '../Enum/EGender.enum';
 import { EAccountStatus } from '../Enum/EAccountStatus.enum';
 import { Role } from 'src/entities/role.entity';
 import { InitiatorAudit } from 'src/audits/Initiator.audit';
+import { UUID } from 'crypto';
 @Entity('users')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class User extends InitiatorAudit {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: UUID;
 
   @Column()
   firstName: String;

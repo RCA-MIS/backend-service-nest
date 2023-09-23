@@ -16,6 +16,7 @@ import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception
 import { CreateProjectDto } from 'src/dtos/create-project.dto';
 import { UpdateProjectDto } from 'src/dtos/update-project.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
 @ApiTags('projects')
 @Controller('projects')
@@ -23,11 +24,13 @@ export class ProjectController {
   constructor(private projectService: ProjectService) {}
 
   @Get('/all')
+  @Roles('ADMIN', 'TEACHER', 'STUDENT')
   getAllProjects() {
     return this.projectService.getAllProjects();
   }
 
   @Get('/:id')
+  @Roles('ADMIN', 'TEACHER', 'STUDENT')
   async getProjectById(@Param('id') id: string) {
     const project = await this.projectService.getProjectById(parseInt(id));
     if (!project) return new NotFoundException('Project Not Found');
@@ -37,6 +40,7 @@ export class ProjectController {
   @Post('/create')
   @ApiBody({ type: CreateProjectDto })
   @UseInterceptors(FileInterceptor('image'))
+  @Roles('ADMIN', 'TEACHER', 'STUDENT')
   createProject(
     @Body() project: CreateProjectDto,
     @UploadedFile() file: Express.Multer.File,
@@ -46,6 +50,7 @@ export class ProjectController {
 
   @Patch('/update/image/:id')
   @UseInterceptors(FileInterceptor('image'))
+  @Roles('ADMIN', 'TEACHER', 'STUDENT')
   updateProjectImage(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
@@ -54,12 +59,14 @@ export class ProjectController {
   }
 
   @Patch('/update/:id')
+  @Roles('ADMIN', 'TEACHER', 'STUDENT')
   @ApiBody({ type: UpdateProjectDto })
   updateProject(@Param('id') id: string, @Body() project: UpdateProjectDto) {
     return this.projectService.updateProject(parseInt(id), project);
   }
 
   @Delete('/delete/:id')
+  @Roles('ADMIN', 'TEACHER', 'STUDENT')
   deleteProject(@Param('id') id: string) {
     return this.projectService.deleteProject(parseInt(id));
   }

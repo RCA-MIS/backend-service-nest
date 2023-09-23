@@ -14,6 +14,8 @@ import { RoleModule } from 'src/roles/role.module';
 import { UtilsModule } from 'src/utils/utils.module';
 import { JwtModule } from '@nestjs/jwt';
 import { UserMiddleWare } from 'src/middlewares/user.middleware';
+import { StudentsModule } from 'src/students/students.module';
+import { TeachersModule } from 'src/teachers/teachers.module';
 
 @Global()
 @Module({
@@ -23,9 +25,11 @@ import { UserMiddleWare } from 'src/middlewares/user.middleware';
     RoleModule,
     JwtModule,
     UtilsModule,
+    StudentsModule,
+    TeachersModule,
   ],
-  exports: [UsersService],
   providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

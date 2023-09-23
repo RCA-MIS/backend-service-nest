@@ -15,6 +15,9 @@ import { RoleService } from 'src/roles/role.service';
 import { UtilsService } from 'src/utils/utils.service';
 import { LoginDTO } from 'src/dtos/lodin.dto';
 import { CreateUserDto } from 'src/dtos/create-user.dto';
+import { UUID } from 'crypto';
+import { EUserType } from 'src/Enum/EUserType.enum';
+import { StudentsService } from 'src/students/students.service';
 
 @Injectable()
 export class UsersService {
@@ -24,19 +27,10 @@ export class UsersService {
     private roleService: RoleService,
     @Inject(forwardRef(() => UtilsService))
     private utilsService: UtilsService,
+    private studentService: StudentsService,
   ) {}
 
   async getUsers() {
-    const user = await this.userRepo.findOne({
-      where: {
-        id: 1,
-      },
-    });
-    // user.roles.push(await this.roleService.getRoleById(1));
-    // await this.userRepo.save({
-    //   ...user,
-    //   roles: [await this.roleService.getRoleById(1)],
-    // });
     const response = await this.userRepo.find({ relations: ['roles'] });
     return response;
   }
@@ -65,7 +59,7 @@ export class UsersService {
     return user;
   }
 
-  async getUserById(id: number, entity: String) {
+  async getUserById(id: UUID, entity: String) {
     const response = await this.userRepo.findOne({
       where: {
         id: id,
@@ -123,17 +117,17 @@ export class UsersService {
   ) {
     const account = await this.getUserByEmail(email);
     if (!account) throw new BadRequestException('This account does not exist');
-    // if (
-    //   account.status === EAccountStatus[EAccountStatus.PENDING] ||
-    //   account.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION]
-    // )
-    //   throw new BadRequestException(
-    //     "Please first verify your account and we'll help you to remember your password later",
-    //   );
-    // if (account.activationCode != activationCode)
-    //   throw new BadRequestException(
-    //     'Your provided invalid activation code, you can request another.',
-    //   );
+    if (
+      account.status === EAccountStatus[EAccountStatus.PENDING] ||
+      account.status == EAccountStatus[EAccountStatus.WAIT_EMAIL_VERIFICATION]
+    )
+      throw new BadRequestException(
+        "Please first verify your account and we'll help you to remember your password later",
+      );
+    if (account.activationCode != activationCode)
+      throw new BadRequestException(
+        'Your provided invalid activation code, you can request another.',
+      );
     account.password = await this.utilsService.hashString(
       newPassword.toString(),
     );
@@ -213,7 +207,7 @@ export class UsersService {
       console.log(error);
     }
   }
-  async updateUser(id: number, attrs: Partial<User>) {
+  async updateUser(id: UUID, attrs: Partial<User>) {
     const user = await this.getUserById(id, 'User');
     if (!user) {
       throw new NotFoundException('User not found');
@@ -221,7 +215,31 @@ export class UsersService {
     Object.assign(user, attrs);
     return this.userRepo.save(user);
   }
-  async deleteUser(id: number) {
+  async assignRoleToUser(userId: UUID, roleName: any, userType: string) {
+    const user = await this.userRepo.findOne({ where: { id: userId } });
+    const role = this.roleService.roleRepo.findOne({
+      where: { role_name: roleName },
+    });
+    if (!role)
+      throw new NotFoundException(
+        'The role with the provided id is not foound',
+      );
+
+    let roles = [];
+    roles = user.roles;
+    roles.push(role);
+    user.roles = roles;
+    switch (userType.toUpperCase()) {
+      case EUserType[EUserType.STUDENT]:
+        return this.studentService.saveStudent(user);
+      case EUserType[EUserType.TEACHER]:
+        return this.studentService.saveStudent(user);
+      default:
+        throw new BadRequestException('The provided userType is invalid');
+    }
+  }
+
+  async deleteUser(id: UUID) {
     const user = await this.getUserById(id, 'User');
     if (!user) {
       throw new NotFoundException('User not found');
