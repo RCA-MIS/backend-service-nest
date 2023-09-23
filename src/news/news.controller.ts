@@ -9,8 +9,9 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  UploadedFiles
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { NewsService } from './news.service';
 import { NotFoundException } from '@nestjs/common';
 import { CreateNewsDto } from 'src/dtos/create-news.dto';
@@ -38,13 +39,15 @@ export class NewsController {
   @Post('/create')
   @Roles('ADMIN', 'PUBLISHER')
   @ApiBody({ type: CreateNewsDto })
-  @UseInterceptors(FileInterceptor('image'))
-  createProject(
+  @UseInterceptors(
+    AnyFilesInterceptor()
+     )
+  async createProject(
+    @UploadedFiles() files: Array<Express.Multer.File>,
     @Body() news: CreateNewsDto,
-    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.newService.createNews(news, file);
-  }
+    return this.newService.createNews(news, files);
+  } 
 
   @Patch('/update/:id')
   @Roles('ADMIN', 'PUBLISHER')
