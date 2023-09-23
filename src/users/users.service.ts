@@ -18,6 +18,7 @@ import { CreateUserDto } from 'src/dtos/create-user.dto';
 import { UUID } from 'crypto';
 import { EUserType } from 'src/Enum/EUserType.enum';
 import { StudentsService } from 'src/students/students.service';
+import { MailingService } from 'src/mailing/mailing.service';
 
 @Injectable()
 export class UsersService {
@@ -28,6 +29,7 @@ export class UsersService {
     @Inject(forwardRef(() => UtilsService))
     private utilsService: UtilsService,
     private studentService: StudentsService,
+    private mailingService: MailingService,
   ) {}
 
   async getUsers() {
@@ -194,14 +196,10 @@ export class UsersService {
     try {
       const userEntity = this.userRepo.create(userToCreate);
       const createdEnity = this.userRepo.save({ ...userEntity, roles: [role] });
-      // await this.mailingService.sendVerificationEmail(
-      //   userEntity.email.toString(),
-      // );
+      await this.mailingService.sendEmail('', false, createdEnity);
       return {
         success: true,
-        message: `we have sent an verification code to your inbox , please head their and verify your account if you can't see it , your verification code is ${
-          (await createdEnity).activationCode
-        }`,
+        message: `we have sent an verification code to your inbox , please head their and verify your account`,
       };
     } catch (error) {
       console.log(error);
