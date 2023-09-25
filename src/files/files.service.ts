@@ -1,4 +1,4 @@
-import { Injectable, UploadedFile, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { extname } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
@@ -10,7 +10,6 @@ export class FilesService {
   async uploadFile(file: Express.Multer.File): Promise<string> {
     const uniqueFileName = this.generateUniqueFileName(file);
     const filePath = `uploads/${uniqueFileName}`;
-
     // Check if the 'uploads' directory exists, and create it if it doesn't
     await this.ensureUploadsDirectoryExists();
 
@@ -30,7 +29,6 @@ export class FilesService {
 
   async deleteFile(fileName: string): Promise<void> {
     const filePath = `uploads/${fileName}`;
-
     try {
       fs.unlinkSync(filePath);
     } catch (error) {
