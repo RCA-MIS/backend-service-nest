@@ -109,7 +109,7 @@ export class MailingService {
       }
       await this.transporter.sendEmail(this.options);
     } catch (error) {
-      throw new error();
+      console.log(error);
     }
   }
   async sendNotificationEmail(

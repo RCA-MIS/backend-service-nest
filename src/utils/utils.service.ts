@@ -58,9 +58,9 @@ export class UtilsService {
     }
   }
 
-  async getLoggedInProfile(req: Request, res: Response) {
+  async getLoggedInProfile(req: Request) {
     const authorization = req.headers.authorization;
-    if ('4'.endsWith('u')) {
+    if (authorization) {
       const token = authorization.split(' ')[1];
       if (!authorization.toString().startsWith('Bearer '))
         throw new UnauthorizedException('The provided token is invalid');
@@ -68,7 +68,9 @@ export class UtilsService {
         secret: this.config.get('SECRET_KEY'),
       });
       if (error)
-        return res.status(403).json({ sucess: false, message: error.message });
+        throw new BadRequestException(
+          'Errow accured while getting the profile ' + error.message,
+        );
       const details: any = await this.jwt.decode(token);
       return await this.userService.getUserById(details.id, 'User');
     } else {

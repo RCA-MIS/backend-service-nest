@@ -196,10 +196,12 @@ export class UsersService {
     try {
       const userEntity = this.userRepo.create(userToCreate);
       const createdEnity = this.userRepo.save({ ...userEntity, roles: [role] });
-      await this.mailingService.sendEmail('', false, createdEnity);
+      // await this.mailingService.sendEmail('', false, createdEnity);
       return {
         success: true,
-        message: `we have sent an verification code to your inbox , please head their and verify your account`,
+        message: ` ${
+          (await createdEnity).activationCode
+        } we have sent an verification code to your inbox , please head their and verify your account`,
       };
     } catch (error) {
       console.log(error);

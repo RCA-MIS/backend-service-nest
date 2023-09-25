@@ -41,10 +41,6 @@ export class UpdateWebContentDTO {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  snapchatLink: String;
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty()
   InstgramLink: String;
   @IsString()
   @IsNotEmpty()

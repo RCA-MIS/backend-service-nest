@@ -73,8 +73,8 @@ export class AuthController {
     );
   }
   @Get('/get-profile')
-  async getProfile(@Req() req: Request, @Res() res: Response) {
-    let profile = await this.authService.getProfile(req, res);
+  async getProfile(@Req() req: Request) {
+    let profile = await this.authService.getProfile(req);
     return profile;
   }
 }

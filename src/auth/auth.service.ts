@@ -5,9 +5,9 @@ import { UtilsService } from 'src/utils/utils.service';
 @Injectable()
 export class AuthService {
   constructor(private utilsService: UtilsService) {}
-  async getProfile(req: Request, res: Response) {
+  async getProfile(req: Request) {
     try {
-      return await this.utilsService.getLoggedInProfile(req, res);
+      return await this.utilsService.getLoggedInProfile(req);
     } catch (error) {
       return error;
     }
