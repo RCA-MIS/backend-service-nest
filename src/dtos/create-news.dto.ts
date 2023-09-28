@@ -17,10 +17,4 @@ export class CreateNewsDto {
   @IsString()
   @ApiProperty()
   longDescription: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @IsEmail()
-  @ApiProperty()
-  userEmail: string;
 }

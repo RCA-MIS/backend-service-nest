@@ -15,6 +15,7 @@ import { UtilsModule } from 'src/utils/utils.module';
     UtilsModule,
     UsersModule,
     FilesModule,
+    UtilsModule,
   ],
   providers: [NewsService],
   exports: [NewsService],

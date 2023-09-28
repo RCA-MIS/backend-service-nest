@@ -63,7 +63,6 @@ export class UserMiddleWare implements NestMiddleware {
             throw new UnauthorizedException('Token is invalid');
           }
         }
-
         next();
       } else {
         console.log(req.baseUrl);

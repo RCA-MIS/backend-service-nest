@@ -7,7 +7,8 @@ import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { FilesService } from 'src/files/files.service';
-import { Express } from 'express';
+import { Express, Request } from 'express';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class NewsService {
@@ -15,6 +16,7 @@ export class NewsService {
     @InjectRepository(News) private newsRepo: Repository<News>,
     private userService: UsersService,
     private fileService: FilesService,
+    private utilsService: UtilsService,
   ) {}
 
   async getAllNews() {
@@ -29,39 +31,47 @@ export class NewsService {
     });
   }
 
-  async createNews(news: CreateNewsDto, files: Express.Multer.File[]) {
-    const { title, shortDescription, longDescription, userEmail } = news;
-    const writer = await this.userService.getUserByEmail(userEmail);
-    if (!writer)
-      return new NotFoundException(`User with email: ${userEmail} not found`);
-    let likes = 0;
-    let imageUpload : Express.Multer.File;
-    let attachmentUpload  : Express.Multer.File;
+  async createNews(
+    news: CreateNewsDto,
+    files: Express.Multer.File[],
+    req: Request,
+  ) {
+    const { title, shortDescription, longDescription } = news;
+    const writer = await this.utilsService.getLoggedInProfile(req);
 
-    files.forEach(file => {
-      if(file.fieldname === 'image'){
+    let likes = 0;
+    let imageUpload: Express.Multer.File;
+    let attachmentUpload: Express.Multer.File;
+
+    files.forEach((file) => {
+      if (file.fieldname === 'image') {
         imageUpload = file;
       }
-      if(file.fieldname === 'attachment'){
+      if (file.fieldname === 'attachment') {
         attachmentUpload = file;
       }
     });
 
     try {
       const image = await this.fileService.uploadFile(imageUpload);
-      if (!image || image == null || image ==undefined) return new NotFoundException('Image not found ');
-      let attachementFile : string;
-      if(!attachmentUpload || attachmentUpload == null || attachmentUpload ==undefined){
-         attachementFile = null
-      }else{
-      attachementFile = await this.fileService.uploadFile(attachmentUpload);
+      if (!image || image == null || image == undefined)
+        return new NotFoundException('Image not found ');
+      let attachementFile: string;
+      if (
+        !attachmentUpload ||
+        attachmentUpload == null ||
+        attachmentUpload == undefined
+      ) {
+        attachementFile = null;
+      } else {
+        attachementFile = await this.fileService.uploadFile(attachmentUpload);
       }
       const newToCreate = new News(
         title,
         shortDescription,
         longDescription,
         image,
-        attachementFile
+        attachementFile,
       );
       const createdNew = await this.newsRepo.save(newToCreate);
       return {

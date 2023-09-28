@@ -9,7 +9,8 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
-  UploadedFiles
+  UploadedFiles,
+  Req,
 } from '@nestjs/common';
 import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { NewsService } from './news.service';
@@ -18,6 +19,7 @@ import { CreateNewsDto } from 'src/dtos/create-news.dto';
 import { UpdateNewsDto } from 'src/dtos/update-news.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/utils/decorators/roles.decorator';
+import { Request } from 'express';
 
 @ApiTags('news')
 @Controller('news')
@@ -39,15 +41,14 @@ export class NewsController {
   @Post('/create')
   @Roles('ADMIN', 'PUBLISHER')
   @ApiBody({ type: CreateNewsDto })
-  @UseInterceptors(
-    AnyFilesInterceptor()
-     )
+  @UseInterceptors(AnyFilesInterceptor())
   async createProject(
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Body() news: CreateNewsDto,
+    @Req() req: Request,
   ) {
-    return this.newService.createNews(news, files);
-  } 
+    return this.newService.createNews(news, files, req);
+  }
 
   @Patch('/update/:id')
   @Roles('ADMIN', 'PUBLISHER')
