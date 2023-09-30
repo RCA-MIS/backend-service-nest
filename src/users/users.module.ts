@@ -13,7 +13,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoleModule } from 'src/roles/role.module';
 import { UtilsModule } from 'src/utils/utils.module';
 import { JwtModule } from '@nestjs/jwt';
-import { UserMiddleWare } from 'src/middlewares/user.middleware';
 import { StudentsModule } from 'src/students/students.module';
 import { TeachersModule } from 'src/teachers/teachers.module';
 
@@ -31,9 +30,5 @@ import { TeachersModule } from 'src/teachers/teachers.module';
   providers: [UsersService],
   exports: [UsersService],
 })
-export class UsersModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(UserMiddleWare).forRoutes('*');
-  }
-}
+export class UsersModule {}
 // {provide:APP_GUARD, useClass:RolesGuard}

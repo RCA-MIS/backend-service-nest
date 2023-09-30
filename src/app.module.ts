@@ -26,7 +26,6 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
-import { UserMiddleWare } from './middlewares/user.middleware';
 import { WebContentModule } from './web-content/web-content.module';
 import { WebContent } from './entities/webcontent.entity';
 import { News } from './entities/news.entity';
