@@ -20,12 +20,14 @@ import { UpdateNewsDto } from 'src/dtos/update-news.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/utils/decorators/roles.decorator';
 import { Request } from 'express';
+import { Public } from 'src/decorators/public.decorator';
 
 @ApiTags('news')
 @Controller('news')
 export class NewsController {
   constructor(private newService: NewsService) {}
 
+  @Public()
   @Get('/all')
   getAllNews() {
     return this.newService.getAllNews();
