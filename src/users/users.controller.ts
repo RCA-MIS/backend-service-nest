@@ -18,6 +18,7 @@ import { Roles } from 'src/utils/decorators/roles.decorator';
 import { Role } from 'src/entities/role.entity';
 import { UUID } from 'crypto';
 import { ApiResponse } from 'src/payload/ApiResponse';
+import { Public } from 'src/decorators/public.decorator';
 
 @ApiTags('users')
 @Controller('users')
@@ -39,6 +40,7 @@ export class UsersController {
     return user;
   }
 
+  @Public()
   @Post('/create')
   @ApiBody({ type: CreateUserDto })
   createAdminAccount(@Body() body: CreateUserDto) {
