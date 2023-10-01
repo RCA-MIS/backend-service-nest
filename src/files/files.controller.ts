@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { FilesService } from './files.service';
 import { Res } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Public } from 'src/decorators/public.decorator';
 
 @Controller('files')
 @ApiTags('files')
@@ -11,6 +12,7 @@ export class FilesController {
         private readonly fileService : FilesService
     ) {}
 
+    @Public()
     @Get(':filename')
     serveFile(@Param('filename') filename, @Res() res){
       const fileLocation = this.fileService.getFile(filename);
