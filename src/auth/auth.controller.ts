@@ -19,6 +19,7 @@ import { ResetPasswordDTO } from 'src/dtos/reset-password.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
+import { Public } from 'src/decorators/public.decorator';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -29,6 +30,7 @@ export class AuthController {
     private authService: AuthService,
   ) {}
 
+  @Public()
   @Post('/login')
   async login(@Body() dto: LoginDTO): Promise<ApiResponse> {
     this.isUserAvailable = await this.userService.getOneByEmail(dto.email);
