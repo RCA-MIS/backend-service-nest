@@ -5,7 +5,6 @@ import {
   Inject,
   Post,
   Put,
-  UploadedFile,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,6 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ApiResponse } from 'src/payload/ApiResponse';
 import { UpdateWebContentDTO } from 'src/dtos/update-website-content.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { Public } from 'src/decorators/public.decorator';
 
 @Controller('web-content')
 @ApiTags('web-content')
@@ -25,6 +25,7 @@ export class WebContentController {
   ) {}
 
   @Get()
+  @Public()
   async getContent() {
     return new ApiResponse(
       true,
@@ -33,6 +34,7 @@ export class WebContentController {
     );
   }
   @Post('create')
+  @Public()
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'abouUsImage', maxCount: 1 },
@@ -68,6 +70,7 @@ export class WebContentController {
   }
 
   @Put('update')
+  @Public()
   async updateWebContent(
     @Body() dto: UpdateWebContentDTO,
     @UploadedFiles()

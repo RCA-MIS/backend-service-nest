@@ -27,13 +27,13 @@ import { Public } from 'src/decorators/public.decorator';
 export class NewsController {
   constructor(private newService: NewsService) {}
 
-  @Public()
   @Get('/all')
   getAllNews() {
     return this.newService.getAllNews();
   }
 
   @Get('/:id')
+  @Public()
   async getProjectById(@Param('id') id: string) {
     const news = await this.newService.getNewsById(parseInt(id));
     if (!news) return new NotFoundException('News Not Found');
