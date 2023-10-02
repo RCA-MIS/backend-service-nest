@@ -17,6 +17,7 @@ import { CreateProjectDto } from 'src/dtos/create-project.dto';
 import { UpdateProjectDto } from 'src/dtos/update-project.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/utils/decorators/roles.decorator';
+import { Public } from 'src/decorators/public.decorator';
 
 @ApiTags('projects')
 @Controller('projects')
@@ -25,12 +26,14 @@ export class ProjectController {
 
   @Get('/all')
   @Roles('ADMIN', 'TEACHER', 'STUDENT')
+  @Public()
   getAllProjects() {
     return this.projectService.getAllProjects();
   }
 
   @Get('/:id')
   @Roles('ADMIN', 'TEACHER', 'STUDENT')
+  @Public()
   async getProjectById(@Param('id') id: string) {
     const project = await this.projectService.getProjectById(parseInt(id));
     if (!project) return new NotFoundException('Project Not Found');
