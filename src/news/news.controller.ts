@@ -27,6 +27,7 @@ import { Public } from 'src/decorators/public.decorator';
 export class NewsController {
   constructor(private newService: NewsService) {}
 
+  @Public()
   @Get('/all')
   getAllNews() {
     return this.newService.getAllNews();
