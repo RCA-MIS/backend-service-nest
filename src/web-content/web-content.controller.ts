@@ -5,7 +5,6 @@ import {
   Inject,
   Post,
   Put,
-  UploadedFile,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';

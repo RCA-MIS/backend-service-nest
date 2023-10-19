@@ -7,19 +7,16 @@ import {
   Body,
   Post,
   Patch,
-  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import { UpdateUserDto } from '../dtos/update-user.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/utils/decorators/roles.decorator';
-import { Role } from 'src/entities/role.entity';
 import { UUID } from 'crypto';
 import { ApiResponse } from 'src/payload/ApiResponse';
 import { Public } from 'src/decorators/public.decorator';
-
+import { CreateUserDto } from 'src/dtos/create-user.dto';
+import { UpdateUserDto } from 'src/dtos/update-user.dto';
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
@@ -32,6 +29,7 @@ export class UsersController {
   }
 
   @Get('/:id')
+  @Roles('ADMIN')
   async getUserById(@Param('id') id: UUID) {
     const user = await this.usersService.getUserById(id, 'User');
     if (!user) {
@@ -55,6 +53,7 @@ export class UsersController {
   }
 
   @Patch('/{assign-role}/:userId/:roleName/:userType')
+  @Roles('ADMIN')
   async assignRoleToUser(
     @Param('userId') userId: UUID,
     @Param('roleName') roleName: any,
