@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.entity';
+import { EProjectStatus } from 'src/Enum/EProjectStatus.enum';
 
 @Entity()
 export class Project {
@@ -14,7 +15,7 @@ export class Project {
   description: string;
 
   @Column()
-  status: string;
+  status: EProjectStatus;
 
   @Column({ nullable: true })
   image: string;
