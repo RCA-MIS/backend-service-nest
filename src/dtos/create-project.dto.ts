@@ -14,9 +14,9 @@ export class CreateProjectDto{
      description: string;
 
      @IsNotEmpty()
-     @IsEnum(EProjectStatus)
+     @IsString({message: 'Status must be REJECETED ,PENDING or APPROVED '})
      @ApiProperty()
-     status: EProjectStatus;
+     status: string;
 
      @IsNotEmpty()
      @IsEmail()
