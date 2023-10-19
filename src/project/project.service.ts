@@ -8,6 +8,8 @@ import { CreateProjectDto } from 'src/dtos/create-project.dto';
 import { UsersService } from 'src/users/users.service';
 import { FilesService } from 'src/files/files.service';
 import { log } from 'console';
+import { EProjectStatus } from 'src/Enum/EProjectStatus.enum';
+import { UpdateProjectDto } from 'src/dtos/update-project.dto';
 
 @Injectable()
 export class ProjectService {
@@ -41,7 +43,16 @@ export class ProjectService {
         }else{
             image = await this.fileService.uploadFile(file);
         }
-        let newstatus = status.toString();
+        let newstatus : EProjectStatus;
+        
+        if(status == null || status == undefined){
+            newstatus = EProjectStatus.PENDING;
+        }else{
+            if(status != "REJECTED" && status != "PENDING" && status != "APPROVED") return new NotFoundException("Status must be REJECTED , PENDING or APPROVED")
+            if(status == "REJECTED") newstatus = EProjectStatus.REJECETED;
+            if(status == "PENDING") newstatus = EProjectStatus.PENDING;
+            if(status == "APPROVED") newstatus = EProjectStatus.APPROVED;
+        }
         const projectEntity = this.projectRepo.create({
             name,
             description,
@@ -81,7 +92,7 @@ export class ProjectService {
     }
     
 
-    async updateProject(id : number , attrs : Partial<Project>){
+    async updateProject(id : number , attrs : Partial<UpdateProjectDto>){
         const project = await this.projectRepo.findOne({
             where : {
                 id : id

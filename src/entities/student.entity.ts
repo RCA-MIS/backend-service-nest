@@ -9,22 +9,19 @@ export class Student extends User {
     firstName: String,
     lastName: String,
     email: String,
-    username: String,
     myGender: EGender,
     national_id: String,
-    phonenumber: String,
-    password: String,
     status: EAccountStatus,
   ) {
     super(
       firstName,
       lastName,
       email,
-      username,
+      '',
       myGender,
       national_id,
-      phonenumber,
-      password,
+      '',
+      'student@rca',
       status,
     );
   }
@@ -32,5 +29,5 @@ export class Student extends User {
     nullable: true,
     default: null,
   })
-  studentId: number;  
+  studentId: number;
 }

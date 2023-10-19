@@ -56,13 +56,11 @@ export class StudentsService {
       dto.firstName,
       dto.lastName,
       dto.email,
-      dto.username,
       gender,
       dto.national_id,
-      dto.phonenumber,
-      dto.password,
       EAccountStatus.WAIT_EMAIL_VERIFICATION,
     );
+    student.password = `student@rca4`;
     student.roles = [studentRole];
     return this.studentRepo.save(student);
   }
