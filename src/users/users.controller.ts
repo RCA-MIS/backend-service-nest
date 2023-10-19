@@ -64,7 +64,7 @@ export class UsersController {
       true,
       'The role has been assigned successfully',
       await this.usersService.assignRoleToUser(userId, roleName, userType),
-    );
+    );35
   }
 
   @Delete('delete/:id')
